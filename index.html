@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>林赫洋 | Unity 客户端开发作品集</title>
+    <meta
+      name="description"
+      content="林赫洋的 Unity 客户端开发作品集，展示项目经历、技术能力、AI 辅助开发工作流与学习路线。"
+    />
+    <link rel="stylesheet" href="./styles/main.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="回到首页">
+        <span class="brand-mark">LH</span>
+        <span>林赫洋</span>
+      </a>
+      <nav class="nav" aria-label="主导航">
+        <a href="#projects">作品</a>
+        <a href="#skills">技能</a>
+        <a href="#ai">AI 工作流</a>
+        <a href="#roadmap">路线</a>
+        <a href="#contact">联系</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-backdrop" aria-hidden="true">
+          <div class="grid-plane"></div>
+          <div class="terminal-panel">
+            <div class="terminal-row"><span>Unity Client</span><b>Gameplay</b></div>
+            <div class="terminal-row"><span>Profiler</span><b>Ready</b></div>
+            <div class="terminal-row"><span>AI Workflow</span><b>Enabled</b></div>
+          </div>
+        </div>
+        <div class="hero-content">
+          <div class="avatar-shell">
+            <div class="avatar-placeholder">头像占位</div>
+          </div>
+          <p class="eyebrow">Harbin University of Science and Technology · Software Engineering · 2028</p>
+          <h1 id="hero-title">林赫洋</h1>
+          <p class="hero-title">Unity 客户端开发 / Gameplay & Client Engineering</p>
+          <p class="hero-copy" id="profile-summary"></p>
+          <div class="hero-actions">
+            <a class="button primary" href="#projects">查看作品</a>
+            <a class="button" href="#skills">技术能力</a>
+          </div>
+          <div class="quick-stats" id="quick-stats" aria-label="核心信息"></div>
+        </div>
+      </section>
+
+      <section class="section intro-section" aria-labelledby="intro-title">
+        <div class="section-head">
+          <p class="eyebrow">Positioning</p>
+          <h2 id="intro-title">面向中大型游戏项目的客户端工程实践者</h2>
+        </div>
+        <div class="intro-grid" id="intro-grid"></div>
+      </section>
+
+      <section class="section" id="projects" aria-labelledby="projects-title">
+        <div class="section-head">
+          <p class="eyebrow">Projects</p>
+          <h2 id="projects-title">精选项目</h2>
+          <p>每个作品预留 3 张图片和 1 个视频位置。替换素材后，这一节会成为网站最重要的证据区。</p>
+        </div>
+        <div class="project-list" id="project-list"></div>
+      </section>
+
+      <section class="section band" id="skills" aria-labelledby="skills-title">
+        <div class="section-head">
+          <p class="eyebrow">Skill Matrix</p>
+          <h2 id="skills-title">Unity 客户端能力矩阵</h2>
+          <p>这里按中大型游戏公司的客户端标准组织。状态可以在数据文件里改成“已具备 / 补强中 / 目标”。</p>
+        </div>
+        <div class="skill-grid" id="skill-grid"></div>
+      </section>
+
+      <section class="section" id="ai" aria-labelledby="ai-title">
+        <div class="section-head">
+          <p class="eyebrow">AI Workflow</p>
+          <h2 id="ai-title">AI 辅助开发工作流</h2>
+          <p>这一节强调“会使用 AI 完成工程闭环”，不是简单写会用工具。</p>
+        </div>
+        <div class="workflow" id="ai-workflow"></div>
+      </section>
+
+      <section class="section split-section" aria-labelledby="experience-title">
+        <div>
+          <div class="section-head compact">
+            <p class="eyebrow">Awards</p>
+            <h2 id="experience-title">竞赛与获奖</h2>
+          </div>
+          <div class="timeline" id="awards-list"></div>
+        </div>
+        <div>
+          <div class="section-head compact">
+            <p class="eyebrow">Leadership</p>
+            <h2>履历与社团</h2>
+          </div>
+          <div class="timeline" id="experience-list"></div>
+        </div>
+      </section>
+
+      <section class="section band" id="roadmap" aria-labelledby="roadmap-title">
+        <div class="section-head">
+          <p class="eyebrow">Roadmap</p>
+          <h2 id="roadmap-title">达到目标版本的学习路线</h2>
+          <p>这部分可以作为你接下来补强能力的路线图，也可以在未来改成“技术复盘”。</p>
+        </div>
+        <div class="roadmap" id="roadmap-list"></div>
+      </section>
+
+      <section class="section contact" id="contact" aria-labelledby="contact-title">
+        <div class="section-head">
+          <p class="eyebrow">Contact</p>
+          <h2 id="contact-title">联系与材料</h2>
+        </div>
+        <div class="contact-panel">
+          <p id="contact-copy"></p>
+          <div class="contact-links" id="contact-links"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>© <span id="year"></span> 林赫洋</span>
+      <span>Unity Client Portfolio</span>
+    </footer>
+
+    <script src="./scripts/data.js"></script>
+    <script src="./scripts/main.js"></script>
+  </body>
+</html>
