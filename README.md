@@ -1,31 +1,27 @@
 # 林赫洋 Unity 客户端作品集网站
 
-这是一个纯前端静态网站，不需要后端，也不需要安装 Node.js。你可以直接双击 `index.html` 在浏览器里打开。
+纯前端静态网站，无需后端或 Node.js。直接双击 `index.html` 即可在浏览器中打开。
 
 ## 文件结构
 
 ```text
 portfolio/
-├─ index.html              页面结构，一般不需要频繁改
+├─ index.html              页面骨架，一般不需要改
 ├─ styles/
-│  └─ main.css             样式、颜色、排版、响应式布局
+│  └─ main.css             全局样式、配色、排版与响应式布局
 ├─ scripts/
-│  ├─ data.js              主要内容数据，最常修改
-│  └─ main.js              页面渲染逻辑，一般不需要改
+│  ├─ data.js              站点内容数据（文字、项目、技能等），最常修改
+│  └─ main.js              页面渲染脚本，一般不需要改
 └─ assets/
-   ├─ projects/            放项目图片和视频
-   └─ resume/              放简历 PDF
+   ├─ projects/            项目截图与视频（project-1 到 project-4）
+   └─ resume/              简历 PDF 存放目录
 ```
 
-## 怎么打开
+## 如何打开
 
-直接打开：
+直接双击项目根目录下的 `index.html` 即可在浏览器中查看。
 
-```text
-outputs/portfolio/index.html
-```
-
-如果浏览器安全策略导致本地资源显示异常，可以在这个文件夹里启动一个简单本地服务器：
+如果浏览器安全策略导致本地资源加载异常，可在项目目录下启动本地服务器：
 
 ```powershell
 python -m http.server 5173
