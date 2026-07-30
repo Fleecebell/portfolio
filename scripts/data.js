@@ -6,17 +6,10 @@ window.PORTFOLIO_DATA = {
     graduation: "2028 年毕业",
     direction: "Unity 客户端开发",
     summary:
-      "我是一名软件工程专业学生，专注 Unity 客户端开发。当前经历覆盖多款 GameJam 与独立游戏项目，长期目标是进入中大型游戏团队，负责可维护、可扩展、可调试的客户端工程与 Gameplay 系统开发。",
+      "我是一名软件工程专业学生，专注 Unity 客户端开发，现担任学校独立游戏开发社团负责人。\n开发过多款 GameJam 与独立游戏项目并多次获奖，拥有良好的代码风格。\n对新技术保持兴趣，熟练运用ChatGPT、Codex等AI工具辅助开发，拥有自己的博客。\n热爱游戏并且想要从事游戏行业。",
     contactCopy:
-      "这里可以放邮箱、电话、GitHub、TapTap、B 站、技术博客和简历 PDF。正式公开前，建议只保留你愿意对外展示的联系方式。",
+      "",
   },
-
-  stats: [
-    { value: "Unity", label: "客户端方向" },
-    { value: "2028", label: "预计毕业" },
-    { value: "6 个", label: "精选项目" },
-    { value: "AI", label: "工程协作工具" },
-  ],
 
   intro: [
     {
@@ -43,7 +36,10 @@ window.PORTFOLIO_DATA = {
       type: "2D Roguelike / GMTK GameJam 2025",
       role: "主程序",
       status: "已具备",
-      links: ["GitHub 链接待确认", "Demo 链接待添加", "技术复盘待添加"],
+      links: [
+        { label: "GitHub", href: "https://github.com/Fleecebell/2025GMTK" },
+        { label: "itch.io", href: "https://fleecebell.itch.io/infinity" },
+      ],
       tags: [
         "Unity",
         "C#",
@@ -90,7 +86,10 @@ window.PORTFOLIO_DATA = {
       type: "3D 解谜 / TapTap Spotlight 2025",
       role: "主程序",
       status: "已具备",
-      links: ["TapTap 链接待添加", "GitHub 链接待添加", "AR 版本说明待添加"],
+      links: [
+        { label: "TapTap", href: "https://www.taptap.cn/app/780492?os=pc" },
+        { label: "GitHub", href: "https://github.com/lizhisunshine/2025TapTapGameJam" },
+      ],
       tags: [
         "Unity 3D",
         "C#",
@@ -136,7 +135,10 @@ window.PORTFOLIO_DATA = {
       type: "2D 双人合作 / 公益 GameJam 2025",
       role: "主程序",
       status: "已具备",
-      links: ["GitHub 链接待添加", "玩法视频待添加"],
+      links: [
+        { label: "GmHub", href: "https://www.gmhub.com/game/8383" },
+        { label: "GitHub", href: "https://github.com/1902231/Leak" },
+      ],
       tags: [
         "Unity 2D",
         "C#",
@@ -181,7 +183,9 @@ window.PORTFOLIO_DATA = {
       type: "2D 平台跳跃 / 广东高校 GameJam 2025",
       role: "主程序",
       status: "已具备",
-      links: ["GitHub 链接待添加", "获奖信息待添加", "玩法视频待添加"],
+      links: [
+        { label: "GitHub", href: "https://github.com/Fleecebell/ALittle-Git" },
+      ],
       tags: [
         "Unity 2D",
         "C#",
@@ -227,7 +231,9 @@ window.PORTFOLIO_DATA = {
       type: "2D AVG / Global Game Jam 2026",
       role: "主程序",
       status: "已具备",
-      links: ["GGJ 页面待添加", "玩法视频待添加", "技术复盘待添加"],
+      links: [
+        { label: "GmHub", href: "https://www.gmhub.com/game/9210" },
+      ],
       tags: [
         "Unity 2D",
         "C#",
@@ -273,7 +279,7 @@ window.PORTFOLIO_DATA = {
       type: "3D 解谜 / CiGA GameJam 2025 / 长期开发",
       role: "副程序",
       status: "补强中",
-      links: ["Steam 页面待添加", "GitHub 链接待添加", "技术复盘待添加"],
+      links: [],
       tags: [
         "Unity 3D",
         "C#",
@@ -407,15 +413,15 @@ window.PORTFOLIO_DATA = {
   ],
 
   awards: [
-    { time: "2024-2026", title: "算法与程序设计竞赛", text: "包含 CCPC 省级奖项、百度之星、校级程序设计竞赛等奖项，可证明基础算法与逻辑能力。" },
-    { time: "2025-2026", title: "多次 GameJam 参赛与获奖", text: "参与 GMTK、TapTap、CiGA、GGJ、广东高校 GameJam 等项目，承担主程序或核心程序职责。" },
-    { time: "在校期间", title: "奖学金与综合表现", text: "结合专业排名、奖学金和竞赛经历，体现稳定学习能力与持续产出。" },
+    { time: "2024-2025", title: "算法与程序设计竞赛", text: "传智杯程序设计挑战（国赛）- 二等奖\nCCPC 黑龙江省大学生程序设计竞赛 - 三等奖\n黑龙江省赛百度之星程序设计大赛 - 铜奖\n码蹄杯程序设计大赛 - 铜奖\n科林明伦杯程序设计比赛 - 二等奖\n哈理工计算机院程序设计比赛 - 一等奖" },
+    { time: "2025-2026", title: "GameJam 获奖", text: "2025 CiGA GameJam - 多半好评奖\n2025 广东大学生 GameJam - 第五名\n2025 TapTap 聚光灯 - 入围 25 全球 AR&AI 开发大赛\n2026 Global GameJam - 特别好评奖" },
+    { time: "在校期间", title: "其他", text: "外语六级 CRT-6\n普通话二甲\n多次奖学金" },
   ],
 
   experience: [
-    { time: "2024.09 - 2028.06", title: "哈尔滨理工大学 · 软件工程", text: "专业学习方向与 Unity 客户端开发结合，重点补强计算机基础、软件工程和游戏客户端工程能力。" },
+    { time: "2024.09 - 2028.06", title: "哈尔滨理工大学 · 软件工程", text: "主修科目：C/C++编程、Java编程、数据结构、操作系统、计算机组成原理、数据库系统、计算机网络" },
     { time: "2025.09 - 至今", title: "独立游戏开发社团负责人", text: "组织 GameJam、技术分享、项目协作和校际交流，推动新人参与游戏开发项目。" },
-    { time: "长期", title: "Unity 项目开发与复盘", text: "持续积累可玩的项目、技术文档、复盘文章和可展示素材，形成完整作品集。" },
+    { time: "2026.6 - 2026.8", title: "实习经历", text: "数据湍流(广州)信息科技有限公司 - Unity开发实习生" },
   ],
 
   roadmap: [
@@ -438,9 +444,9 @@ window.PORTFOLIO_DATA = {
   ],
 
   contactLinks: [
-    { label: "GitHub", href: "https://github.com/Fleecebell" },
-    { label: "TapTap", href: "#" },
-    { label: "邮箱", href: "mailto:your-email@example.com" },
-    { label: "简历 PDF", href: "./assets/resume/resume.pdf" },
+    { label: "GitHub", href: "https://github.com/Fleecebell", icon: "./assets/github.png" },
+    { label: "TapTap", href: "https://www.taptap.cn/user/44105615", icon: "./assets/taptap.png" },
+    { label: "邮箱", href: "mailto:2126401535@qq.com", icon: "./assets/邮箱.png" },
+    { label: "简历 PDF", href: "./assets/resume/resume.pdf", icon: "./assets/简历.png" },
   ],
 };

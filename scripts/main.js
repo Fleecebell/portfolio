@@ -1,36 +1,10 @@
 const data = window.PORTFOLIO_DATA;
 
-const statusClassMap = {
-  已具备: "done",
-  补强中: "learning",
-  目标: "target",
-};
-
 function el(tag, className, text) {
   const node = document.createElement(tag);
   if (className) node.className = className;
   if (text) node.textContent = text;
   return node;
-}
-
-function renderStats() {
-  const target = document.querySelector("#quick-stats");
-  data.stats.forEach((item) => {
-    const card = el("div", "stat");
-    card.append(el("strong", "", item.value));
-    card.append(el("span", "", item.label));
-    target.append(card);
-  });
-}
-
-function renderIntro() {
-  const target = document.querySelector("#intro-grid");
-  data.intro.forEach((item) => {
-    const card = el("article", "info-card");
-    card.append(el("h3", "", item.title));
-    card.append(el("p", "", item.text));
-    target.append(card);
-  });
 }
 
 function renderProjects() {
@@ -44,7 +18,6 @@ function renderProjects() {
     content.append(el("p", "", project.summary));
 
     const meta = el("div", "project-meta");
-    meta.append(el("span", `status ${statusClassMap[project.status] || "target"}`, project.status));
     meta.append(el("span", "tag", project.role));
     project.tags.forEach((tag) => meta.append(el("span", "tag", tag)));
     content.append(meta);
@@ -59,7 +32,17 @@ function renderProjects() {
     content.append(points);
 
     const links = el("div", "project-meta");
-    project.links.forEach((link) => links.append(el("span", "tag", link)));
+    project.links.forEach((link) => {
+      if (typeof link === "string") {
+        links.append(el("span", "tag", link));
+      } else {
+        const anchor = el("a", "tag", link.label);
+        anchor.href = link.href;
+        anchor.target = "_blank";
+        anchor.rel = "noopener noreferrer";
+        links.append(anchor);
+      }
+    });
     content.append(links);
 
     const media = el("div", "media-grid");
@@ -97,33 +80,6 @@ function renderProjects() {
   });
 }
 
-function renderSkills() {
-  const target = document.querySelector("#skill-grid");
-  data.skills.forEach((skill) => {
-    const card = el("article", "skill-card");
-    const header = el("header");
-    header.append(el("h3", "", skill.group));
-    header.append(el("span", `status ${statusClassMap[skill.status] || "target"}`, skill.status));
-
-    const list = el("ul");
-    skill.items.forEach((item) => list.append(el("li", "", item)));
-
-    card.append(header, list);
-    target.append(card);
-  });
-}
-
-function renderWorkflow() {
-  const target = document.querySelector("#ai-workflow");
-  data.aiWorkflow.forEach((item, index) => {
-    const card = el("article", "workflow-item");
-    card.append(el("div", "workflow-index", String(index + 1).padStart(2, "0")));
-    card.append(el("h3", "", item.title));
-    card.append(el("p", "", item.text));
-    target.append(card);
-  });
-}
-
 function renderTimeline(source, selector) {
   const target = document.querySelector(selector);
   source.forEach((item) => {
@@ -135,25 +91,20 @@ function renderTimeline(source, selector) {
   });
 }
 
-function renderRoadmap() {
-  const target = document.querySelector("#roadmap-list");
-  data.roadmap.forEach((item, index) => {
-    const card = el("article", "roadmap-item");
-    card.dataset.step = String(index + 1).padStart(2, "0");
-    card.append(el("h3", "", item.title));
-    const list = el("ul");
-    item.items.forEach((entry) => list.append(el("li", "", entry)));
-    card.append(list);
-    target.append(card);
-  });
-}
-
 function renderContact() {
   document.querySelector("#contact-copy").textContent = data.profile.contactCopy;
   const target = document.querySelector("#contact-links");
   data.contactLinks.forEach((link) => {
-    const anchor = el("a", "button", link.label);
+    const anchor = el("a", "button");
     anchor.href = link.href;
+    if (link.icon) {
+      const img = document.createElement("img");
+      img.src = link.icon;
+      img.alt = link.label;
+      img.className = "btn-icon";
+      anchor.append(img);
+    }
+    anchor.append(document.createTextNode(" " + link.label));
     target.append(anchor);
   });
 }
@@ -161,14 +112,9 @@ function renderContact() {
 function boot() {
   document.querySelector("#profile-summary").textContent = data.profile.summary;
   document.querySelector("#year").textContent = new Date().getFullYear();
-  renderStats();
-  renderIntro();
   renderProjects();
-  renderSkills();
-  renderWorkflow();
   renderTimeline(data.awards, "#awards-list");
   renderTimeline(data.experience, "#experience-list");
-  renderRoadmap();
   renderContact();
 }
 
