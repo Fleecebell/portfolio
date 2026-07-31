@@ -105,6 +105,7 @@ export default function Hero() {
           <img src="./assets/hero-bg-poster.jpg" alt="" />
         </picture>
         <div className="hero-video-overlay" />
+        <div className="hero-video-shade" />
         <div className="hero-grid" />
         <div className="hero-glow hero-glow-1" />
         <div className="hero-glow hero-glow-2" />
