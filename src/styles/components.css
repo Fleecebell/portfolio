@@ -205,7 +205,7 @@
   );
 }
 
-/* 上半屏压暗层：上 70% 高度，不透明度 72% → 0 渐变（压住偏亮的上半屏） */
+/* 上半屏压暗层：上 70% 高度，不透明度 80% → 0 渐变（压住偏亮的上半屏） */
 .hero-video-shade {
   position: fixed;
   top: 0;
@@ -215,10 +215,43 @@
   z-index: -1;
   background: linear-gradient(
     180deg,
-    rgba(5, 7, 10, 0.72) 0%,
+    rgba(5, 7, 10, 0.8) 0%,
     rgba(5, 7, 10, 0) 100%
   );
   pointer-events: none;
+}
+
+/* 微信端「点击播放高清背景」提示按钮：导航栏内的独立按钮（汉堡菜单左侧） */
+.hero-video-hint {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 14px;
+  margin-right: 10px;
+  border: 1px solid rgba(148, 170, 200, 0.22);
+  border-radius: 999px;
+  background: rgba(8, 11, 16, 0.5);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: rgba(233, 237, 244, 0.72);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  opacity: 0.75;
+  transition: opacity 0.3s var(--ease-out);
+}
+
+.hero-video-hint:hover {
+  opacity: 1;
+  border-color: rgba(94, 234, 212, 0.4);
+  color: var(--accent);
+}
+
+@media (max-width: 640px) {
+  .hero-video-hint {
+    font-size: 0.62rem;
+    padding: 5px 10px;
+    margin-right: 6px;
+  }
 }
 
 /* 视频兜底层：优先动画 WebP（微信等被拦截时背景依然动态），老浏览器回退静态首帧 */

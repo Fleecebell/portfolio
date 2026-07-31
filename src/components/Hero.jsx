@@ -59,16 +59,21 @@ export default function Hero() {
       window.addEventListener(ev, onInteract, { passive: true })
     );
 
-    // 3 秒内未能开始播放（或无法解码）则显示静态首帧兜底
+    // 兜底切换时机：微信必然拦截自动播放 → 100ms 内直接切动画 WebP；
+    // 其他浏览器给视频 800ms 播放机会再兜底
+    const isWeChat = /MicroMessenger/i.test(navigator.userAgent);
+    const fallbackDelay = isWeChat ? 100 : 800;
     const t = setTimeout(() => {
       if (v.paused || v.videoWidth === 0) showPoster();
-    }, 3000);
+    }, fallbackDelay);
     v.addEventListener(
       "playing",
       () => {
         played = true;
         clearTimeout(t);
         hidePoster();
+        // 视频开始播放后，隐藏导航栏上的微信提示按钮
+        document.querySelector(".hero-video-hint")?.remove();
       },
       { once: true }
     );
