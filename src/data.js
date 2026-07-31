@@ -448,6 +448,6 @@ export default {
     { label: "GitHub", href: "https://github.com/Fleecebell", icon: "./assets/github.png" },
     { label: "TapTap", href: "https://www.taptap.cn/user/44105615", icon: "./assets/taptap.png" },
     { label: "邮箱", href: "mailto:2126401535@qq.com", icon: "./assets/邮箱.png" },
-    { label: "简历 PDF", href: "./assets/resume/resume.pdf", icon: "./assets/简历.png" },
+    { label: "简历", href: "./assets/resume/resume.pdf", icon: "./assets/简历.png" },
   ],
 };

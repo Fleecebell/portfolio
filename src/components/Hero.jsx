@@ -126,7 +126,7 @@ export default function Hero() {
 
           <div className="hero-tagline">
             <span className="mono" style={{ color: "var(--accent)" }}>
-              Unity 客户端开发 · Unity Client Developer
+              Unity 客户端开发
             </span>
           </div>
 
@@ -179,8 +179,6 @@ export default function Hero() {
               <span className="v">{data.profile.direction}</span>
             </div>
           </div>
-
-          <span className="hero-card-online">STATUS · ACTIVE</span>
         </aside>
       </div>
     </section>

@@ -205,7 +205,7 @@
   );
 }
 
-/* 上半屏压暗层：上 70% 高度，不透明度 80% → 0 渐变（压住偏亮的上半屏） */
+/* 上半屏压暗层：上 70% 高度，不透明度 88% → 0 渐变（压住偏亮的上半屏） */
 .hero-video-shade {
   position: fixed;
   top: 0;
@@ -215,7 +215,7 @@
   z-index: -1;
   background: linear-gradient(
     180deg,
-    rgba(5, 7, 10, 0.8) 0%,
+    rgba(5, 7, 10, 0.88) 0%,
     rgba(5, 7, 10, 0) 100%
   );
   pointer-events: none;
