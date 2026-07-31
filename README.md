@@ -71,6 +71,25 @@ portfolio/
 目标
 ```
 
+## 怎么上传视频（背景视频 / 作品视频）
+
+**为保证所有手机、浏览器都能播放，视频必须转成 H.264 MP4**（手机拍摄的 .mov 通常是 HEVC/H.265，很多设备播不了）。项目内置了转码工具：
+
+```bash
+# 背景视频（生成 public/assets/hero-bg.mp4）
+node scripts/convert-video.mjs 你的视频.mov hero-bg
+
+# 作品视频（输出名可带子目录，生成 public/assets/projects/project-1/video.mp4）
+node scripts/convert-video.mjs project-video.mov project-1/video
+```
+
+转码参数（已针对作品集优化）：H.264 / 1080p / 去音轨 / `+faststart`（边下边播）。生成后：
+
+1. 把 `.mp4` 放到 `public/assets/` 对应位置
+2. 在 `src/data.js` 里把路径填到 `media.video`（背景视频则覆盖 `hero-bg.mp4`）
+
+**视频规范**：H.264 mp4、分辨率 ≤ 1920×1080、体积尽量 < 10MB、时长 5–60 秒、背景视频无音轨。避免 HEVC/H.265、ProRes、AVI、MKV 等编码/容器。
+
 ## 怎么新增一个项目
 
 1. 打开 `src/data.js`，找到 `projects: [`
