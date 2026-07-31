@@ -27,32 +27,54 @@ export default function Hero() {
       if (posterRef.current) posterRef.current.style.opacity = "0";
     };
 
+    let played = false;
     const tryPlay = () => {
-      if (v.paused) {
-        v.play().catch(() => {
-          // 自动播放失败（iOS 低电量/数据节约等）→ 等用户首次交互再试
-          const once = () => v.play().catch(() => {});
-          window.addEventListener("touchstart", once, { once: true });
-          window.addEventListener("click", once, { once: true });
-        });
+      if (played || !v.paused) {
+        if (!v.paused) played = true;
+        return;
       }
+      v.play()
+        .then(() => {
+          played = true;
+        })
+        .catch(() => {
+          // 自动播放被拦截（华为/微信/低电量/数据节约等）→ 等待用户交互重试
+        });
     };
 
+    // 页面加载后多次自动重试（最长 8 秒），覆盖浏览器异步解锁自动播放的场景
     tryPlay();
     v.addEventListener("loadeddata", tryPlay);
-    // 3 秒���未能开始播放（或被移动端拦截/无法解码）则显示静态首帧兜底
+    v.addEventListener("canplay", tryPlay);
+    const retry = setInterval(tryPlay, 1500);
+    setTimeout(() => clearInterval(retry), 8000);
+
+    // 用户任何交互（点击 / 触摸 / 滚动 / 按键）都立即重试播放
+    const onInteract = () => tryPlay();
+    ["touchstart", "click", "scroll", "keydown"].forEach((ev) =>
+      window.addEventListener(ev, onInteract, { passive: true })
+    );
+
+    // 3 秒内未能开始播放（或无法解码）则显示静态首帧兜底
     const t = setTimeout(() => {
       if (v.paused || v.videoWidth === 0) showPoster();
     }, 3000);
     v.addEventListener(
       "playing",
       () => {
+        played = true;
         clearTimeout(t);
         hidePoster();
       },
       { once: true }
     );
-    return () => clearTimeout(t);
+    return () => {
+      clearTimeout(t);
+      clearInterval(retry);
+      ["touchstart", "click", "scroll", "keydown"].forEach((ev) =>
+        window.removeEventListener(ev, onInteract)
+      );
+    };
   }, []);
 
   return (
