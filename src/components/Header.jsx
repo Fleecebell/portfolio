@@ -3,10 +3,8 @@ import { useEffect, useState } from "react";
 const NAV_ITEMS = [
   { idx: "01", label: "竞赛与获奖", href: "#awards" },
   { idx: "02", label: "履历与实习", href: "#experience" },
-  { idx: "03", label: "精选项目", href: "#projects" },
-  { idx: "04", label: "技能矩阵", href: "#skills" },
-  { idx: "05", label: "AI 工作流", href: "#workflow" },
-  { idx: "06", label: "联系与资料", href: "#contact" },
+  { idx: "03", label: "项目与能力", href: "#projects" },
+  { idx: "04", label: "联系与资料", href: "#contact" },
 ];
 
 export default function Header() {
@@ -49,11 +47,7 @@ export default function Header() {
             src="./assets/avatar.jpg"
             alt="头像"
           />
-          <span>
-            <span className="brand-name">羊毛Fleece_</span>
-            <br />
-            <span className="brand-path">~/unity-client</span>
-          </span>
+          <span className="brand-name">羊毛Fleece_</span>
         </a>
 
         <nav className={`main-nav ${open ? "open" : ""}`} aria-label="主导航">

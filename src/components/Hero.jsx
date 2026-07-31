@@ -24,13 +24,6 @@ export default function Hero() {
 
       <div className="container hero-inner">
         <div className="hero-main">
-          <p className="hero-path mono">
-            <span className="prompt">$</span>
-            <span>cd ~/fleecebell/unity-client</span>
-            <span className="dot-sep" />
-            <span>console.log("hello, world")</span>
-          </p>
-
           <h1 className="hero-title">
             {data.profile.name}
             <span className="cursor" aria-hidden="true" />
@@ -38,10 +31,8 @@ export default function Hero() {
 
           <div className="hero-tagline">
             <span className="mono" style={{ color: "var(--accent)" }}>
-              Unity Client Developer
+              Unity 客户端开发 · Unity Client Developer
             </span>
-            <span className="dot-sep" />
-            <span className="mono">Gameplay · UI · Tooling</span>
           </div>
 
           <p className="hero-summary">{data.profile.summary}</p>
@@ -54,9 +45,9 @@ export default function Hero() {
               履历与实习
             </a>
             <a className="btn" href="#projects">
-              精选项目
+              项目与能力
             </a>
-            <a className="btn btn-primary" href="#contact">
+            <a className="btn" href="#contact">
               联系与资料
             </a>
           </div>
@@ -70,8 +61,8 @@ export default function Hero() {
               alt="头像"
             />
             <div>
-              <p className="hero-card-name">羊毛Fleece_</p>
-              <p className="hero-card-role">// Unity Client Developer</p>
+              <p className="hero-card-name">{data.profile.name}</p>
+              <p className="hero-card-role">// Unity 客户端开发</p>
             </div>
           </div>
 
@@ -96,11 +87,6 @@ export default function Hero() {
 
           <span className="hero-card-online">STATUS · ACTIVE</span>
         </aside>
-      </div>
-
-      <div className="hero-scroll-hint" aria-hidden="true">
-        <span className="mono">SCROLL</span>
-        <span className="hint-line" />
       </div>
     </section>
   );

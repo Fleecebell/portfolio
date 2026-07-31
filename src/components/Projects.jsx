@@ -43,15 +43,6 @@ function ProjectCard({ project, index }) {
             {String(index + 1).padStart(2, "0")}
           </span>
           <span className="type">{project.type}</span>
-          {project.status && (
-            <span
-              className="status-tag"
-              data-status={project.status}
-              style={{ marginLeft: "auto" }}
-            >
-              {project.status}
-            </span>
-          )}
         </div>
 
         <h3 className="project-name">{project.name}</h3>
@@ -109,7 +100,7 @@ export default function Projects() {
                 <span className="mono">03</span>
                 Projects
               </span>
-              <h2 className="section-title">精选项目</h2>
+              <h2 className="section-title">项目与能力</h2>
             </div>
             <p className="section-desc">
               Selected Works

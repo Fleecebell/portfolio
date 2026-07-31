@@ -37,15 +37,6 @@
   50% { opacity: 0; }
 }
 
-/* 通用圆点分隔符 */
-.dot-sep {
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 8px var(--accent-glow);
-}
-
 /* ------------------------------------------------------------
    顶部导航
    ------------------------------------------------------------ */
@@ -264,17 +255,6 @@
 }
 
 /* 左侧：标题区 */
-.hero-path {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 28px;
-}
-
-.hero-path .prompt {
-  color: var(--accent);
-}
-
 .hero-title {
   font-size: clamp(64px, 11vw, 168px);
   font-weight: 700;
@@ -439,35 +419,6 @@
   50% { opacity: 0.4; }
 }
 
-/* 底部滚动提示 */
-.hero-scroll-hint {
-  position: absolute;
-  bottom: 28px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  color: var(--text-3);
-  opacity: 0;
-  animation: hero-rise 1s var(--ease-out) 1s forwards;
-}
-
-.hero-scroll-hint .hint-line {
-  width: 1px;
-  height: 36px;
-  background: linear-gradient(180deg, var(--accent), transparent);
-  animation: hint-drop 2s ease-in-out infinite;
-}
-
-@keyframes hint-drop {
-  0% { transform: scaleY(0); transform-origin: top; }
-  45% { transform: scaleY(1); transform-origin: top; }
-  55% { transform: scaleY(1); transform-origin: bottom; }
-  100% { transform: scaleY(0); transform-origin: bottom; }
-}
-
 /* ------------------------------------------------------------
    定位卡片（Hero 之下）
    ------------------------------------------------------------ */
@@ -532,7 +483,6 @@
 .section {
   position: relative;
   padding: var(--section-gap) 0;
-  scroll-margin-top: 72px;
 }
 
 .section::before {
