@@ -49,9 +49,13 @@ export default function Hero() {
     const retry = setInterval(tryPlay, 1500);
     setTimeout(() => clearInterval(retry), 8000);
 
-    // 用户任何交互（点击 / 触摸 / 滚动 / 按键）都立即重试播放
+    // 用户交互立即重试播放
+    // 微信等内置浏览器要求 play() 必须在用户手势（非 passive 的 touch/click）内调用
     const onInteract = () => tryPlay();
-    ["touchstart", "click", "scroll", "keydown"].forEach((ev) =>
+    ["touchstart", "click"].forEach((ev) =>
+      window.addEventListener(ev, onInteract, { capture: true, passive: false })
+    );
+    ["scroll", "keydown"].forEach((ev) =>
       window.addEventListener(ev, onInteract, { passive: true })
     );
 
@@ -71,7 +75,10 @@ export default function Hero() {
     return () => {
       clearTimeout(t);
       clearInterval(retry);
-      ["touchstart", "click", "scroll", "keydown"].forEach((ev) =>
+      ["touchstart", "click"].forEach((ev) =>
+        window.removeEventListener(ev, onInteract, { capture: true })
+      );
+      ["scroll", "keydown"].forEach((ev) =>
         window.removeEventListener(ev, onInteract)
       );
     };
