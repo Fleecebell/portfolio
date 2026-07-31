@@ -90,6 +90,37 @@ node scripts/convert-video.mjs project-video.mov project-1/video
 
 **视频规范**：H.264 mp4、分辨率 ≤ 1920×1080、体积尽量 < 10MB、时长 5–60 秒、背景视频无音轨。避免 HEVC/H.265、ProRes、AVI、MKV 等编码/容器。
 
+## 项目封面规范（自动读取）
+
+作品区是横向自动滚动轮播，封面由构建时扫描 `public/assets/projects/` 自动识别：
+
+```
+public/assets/projects/
+├── project-1/cover.jpg    ← 第 1 个作品
+├── project-2/cover.jpg    ← 第 2 个作品
+├── project-3/cover.jpg
+├── project-4/cover.jpg
+├── project-5/cover.jpg
+├── project-6/cover.jpg
+├── project-7/cover.jpg    ← 新建文件夹 + 放入封面 → 自动并入轮播末尾
+└── ...
+```
+
+**核心规则**：
+
+1. **文件夹命名必须是 `project-数字`**（`project-1`、`project-7`、`project-42`…）
+2. **封面文件命名必须是 `cover`**（扩展名支持 `jpg` / `jpeg` / `png` / `webp`）
+3. **新建 `project-7/cover.jpg` 后直接重新构建**，轮播自动并入，**不需要改代码**
+4. 轮播里展示的「游戏类型」「游戏名称」来自 `src/data.js` 的 `projects` 数组（按顺序对应 `project-1..N`）；如果未来在 `data.js` 里还没写的项目，轮播会自动显示占位文字「项目 N」，类型留空
+
+**可选**：在项目文件夹里放 `info.json` 可覆盖默认文字（仅对 `data.js` 没有的项目有效）：
+
+```json
+{ "name": "项目名", "type": "类型描述" }
+```
+
+**封面建议尺寸**：16:9、最小 800×450（更大更清晰）、单文件 < 500KB。避免带大量文字（轮播上看不清）。
+
 ## 怎么新增一个项目
 
 1. 打开 `src/data.js`，找到 `projects: [`

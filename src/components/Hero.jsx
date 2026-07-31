@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import Lanyard from "./Lanyard/Lanyard";
 import data from "../data";
 
 export default function Hero() {
@@ -118,7 +119,18 @@ export default function Hero() {
       </div>
 
       <div className="container hero-inner">
-        <div className="hero-main">
+        {/* 挂牌（左列/上方）：在自我介绍之前 */}
+        <aside className="hero-lanyard">
+          <Lanyard
+            gravity={[0, -40, 0]}
+            frontImage="./assets/lanyard/front.png"
+            backImage="./assets/lanyard/back.png"
+            imageFit="cover"
+          />
+        </aside>
+
+        {/* 自我介绍（右列/下方），锚点 #intro 定位到标题 */}
+        <div className="hero-main" id="intro">
           <h1 className="hero-title">
             {data.profile.name}
             <span className="cursor" aria-hidden="true" />
@@ -147,39 +159,6 @@ export default function Hero() {
             </a>
           </div>
         </div>
-
-        <aside className="hero-card">
-          <div className="hero-card-head">
-            <img
-              className="hero-card-avatar"
-              src="./assets/avatar.jpg"
-              alt="头像"
-            />
-            <div>
-              <p className="hero-card-name">{data.profile.name}</p>
-              <p className="hero-card-role">// Unity 客户端开发</p>
-            </div>
-          </div>
-
-          <div className="hero-card-rows">
-            <div className="hero-card-row">
-              <span className="k mono">学校</span>
-              <span className="v">{data.profile.school}</span>
-            </div>
-            <div className="hero-card-row">
-              <span className="k mono">专业</span>
-              <span className="v">{data.profile.major}</span>
-            </div>
-            <div className="hero-card-row">
-              <span className="k mono">毕业</span>
-              <span className="v">{data.profile.graduation}</span>
-            </div>
-            <div className="hero-card-row">
-              <span className="k mono">方向</span>
-              <span className="v">{data.profile.direction}</span>
-            </div>
-          </div>
-        </aside>
       </div>
     </section>
   );

@@ -170,13 +170,15 @@
   display: flex;
   align-items: center;
   padding: 160px 0 80px;
-  overflow: hidden;
+  /* overflow: visible —— 挂牌画布四向延展一屏需要溢出可见；
+     背景装饰（光晕/网格）由 .hero-bg 自身裁剪 */
 }
 
-/* 背景：视频 + 网格 + 光晕 */
+/* 背景：视频 + 网格 + 光晕（自身裁剪，不随 hero 溢出） */
 .hero-bg {
   position: absolute;
   inset: 0;
+  overflow: hidden;
   pointer-events: none;
 }
 
@@ -338,7 +340,8 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(360px, 0.72fr);
+  /* 横屏：挂牌在左（自我介绍之前），自我介绍在右 */
+  grid-template-columns: minmax(440px, 0.85fr) minmax(0, 1.15fr);
   gap: clamp(40px, 5vw, 88px);
   align-items: center;
   width: 100%;
@@ -346,7 +349,7 @@
 
 /* 左侧：标题区 */
 .hero-title {
-  font-size: clamp(64px, 11vw, 168px);
+  font-size: clamp(38px, 6.5vw, 96px);
   font-weight: 700;
   line-height: 0.98;
   letter-spacing: 0.02em;
@@ -403,9 +406,57 @@
   display: flex;
   flex-wrap: wrap;
   gap: 14px;
-  margin-top: 36px;
+  /* 4 个按钮整体上移 25px（36 → 11；入场动画会覆盖 transform，故用 margin） */
+  margin-top: 11px;
   opacity: 0;
   animation: hero-rise 1s var(--ease-out) 0.6s forwards;
+}
+
+/* 右侧：3D 挂牌（Lanyard） */
+/* 挂牌（Lanyard）：占布局左列；画布直接接收事件，hero-main 在 DOM 后覆盖画布右列（按钮可点） */
+.hero-lanyard {
+  position: relative;
+  width: 100%;
+  height: clamp(540px, 66vh, 660px);
+  min-height: 500px;
+}
+
+/* 电脑端：整个牌子往上移动 70px */
+@media (min-width: 1081px) {
+  .hero-lanyard {
+    transform: translateY(-70px);
+  }
+}
+
+/* 自我介绍锚点：导航「自我介绍」停在标题处 */
+.hero-main {
+  scroll-margin-top: 200px;
+  /* 整个自我介绍部分上移 100px（左右默认居中） */
+  transform: translate(0, -100px);
+}
+
+/* 电脑端：自我介绍额外左移 60px（手机端不动） */
+@media (min-width: 1081px) {
+  .hero-main {
+    transform: translate(-60px, -100px);
+  }
+}
+
+/* 移动端：竖屏挂牌在自我介绍上方（先见牌子，下滑见自我介绍） */
+@media (max-width: 640px) {
+  .hero {
+    overflow: visible;
+  }
+  .hero-inner {
+    gap: 36px;
+  }
+  .hero-lanyard {
+    order: -1;
+    height: 460px;
+    min-height: 0;
+    /* 手机端：整个牌子往下移动 80px */
+    transform: translateY(80px);
+  }
 }
 
 /* 右侧：身份卡 */
@@ -1237,9 +1288,18 @@
 }
 
 @media (max-width: 1080px) {
+  /* 竖屏/平板：单列，挂牌在自我介绍上方（DOM 顺序在前）；内容超高不裁 */
+  .hero {
+    overflow: visible;
+  }
   .hero-inner {
     grid-template-columns: 1fr;
     gap: 48px;
+  }
+  .hero-lanyard {
+    order: -1;
+    height: 460px;
+    min-height: 0;
   }
   .hero-card {
     max-width: 560px;
@@ -1343,5 +1403,344 @@
 @media (max-width: 420px) {
   .skill-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ------------------------------------------------------------
+   项目封面轮播（横向无缝滚动）
+   ------------------------------------------------------------ */
+.project-marquee {
+  --pm-w: 300px;
+  --pm-gap: 22px;
+  position: relative;
+  overflow: hidden;
+  margin-top: clamp(32px, 4vw, 56px);
+  padding: 14px 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+
+.project-marquee-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: pm-marquee 46s linear infinite;
+  will-change: transform;
+}
+
+/* 两排统一暂停：鼠标悬停封面时两排同时停，保证上下交错关系恒定（离开封面恢复滚动） */
+.pm-rows.paused .project-marquee-track {
+  animation-play-state: paused;
+}
+
+/* 无缝滚动：轨道 = 2 份循环（loop 拼接两份），卡片用 margin-right 保证
+   每张（含最后一张）等宽，-50% 位移恰好 = 1 份循环宽度，循环无跳变 */
+@keyframes pm-marquee {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+/* 第二排：在 offset 整数错位基础上，再往左错开半个封面（总错位 3.5 卡位）。
+   动画位移差仍 = 1 份循环宽度（-50%），只是整体偏置半个卡位 → 无缝且恒距交错 */
+.pm-row:nth-child(2) .project-marquee-track {
+  animation-name: pm-marquee-offset;
+}
+
+@keyframes pm-marquee-offset {
+  from { transform: translateX(calc(-50% - (var(--pm-w) + var(--pm-gap)) * 0.5)); }
+  to { transform: translateX(calc((var(--pm-w) + var(--pm-gap)) * -0.5)); }
+}
+
+/* 两排容器 */
+.pm-rows {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1vw, 16px);
+}
+
+/* Projects 区块：压缩标题与轮播的间距，保证「标题 + 两排」一个视口装下 */
+#projects .section-head {
+  margin-bottom: clamp(8px, 0.7vw, 12px);
+}
+
+/* Projects 区块上下留白同步收窄；scroll-margin-top 随 padding-top 联动，
+   保证锚定跳转后标题仍停在视口约 100px 处（导航栏 72px 之下） */
+#projects {
+  padding-top: clamp(28px, 3.5vw, 44px);
+  padding-bottom: clamp(48px, 6vw, 80px);
+  scroll-margin-top: calc(100px - clamp(28px, 3.5vw, 44px));
+}
+
+.pm-row .project-marquee {
+  margin-top: 0;
+}
+
+/* 收录数量说明 */
+.section-count {
+  margin-top: 10px;
+  font-size: 0.92rem;
+  letter-spacing: 0.04em;
+  color: var(--text-2);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-count::before {
+  content: "";
+  width: 22px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+
+.project-marquee-card {
+  position: relative;
+  flex: 0 0 auto;
+  width: var(--pm-w);
+  height: 188px;
+  margin-right: var(--pm-gap);
+  border-radius: var(--radius-m);
+  border: 1px solid var(--line-2);
+  overflow: hidden;
+  cursor: pointer;
+  background: rgba(14, 18, 24, 0.4);
+  transition:
+    border-color 0.4s var(--ease-out),
+    box-shadow 0.4s var(--ease-out),
+    transform 0.4s var(--ease-out);
+}
+
+.project-marquee-card:hover,
+.project-marquee-card.hovered {
+  border-color: var(--accent);
+  box-shadow: 0 0 30px var(--accent-dim);
+  transform: translateY(-4px);
+}
+
+.project-marquee-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* 悬停信息：左下角 类型 + 名称 */
+.project-marquee-info {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  padding: 22px 16px 14px;
+  background: linear-gradient(180deg, transparent, rgba(4, 6, 9, 0.92) 62%);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  pointer-events: none;
+}
+
+.pm-type {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  opacity: 0.95;
+}
+
+.pm-name {
+  font-size: 1.06rem;
+  font-weight: 600;
+  color: var(--text-1);
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.marquee-empty {
+  margin-top: clamp(32px, 4vw, 56px);
+  padding: 44px 24px;
+  text-align: center;
+  border: 1px dashed var(--line-2);
+  border-radius: var(--radius-m);
+  color: var(--text-2);
+  font-size: 0.9rem;
+  line-height: 2;
+}
+
+.marquee-empty code {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--accent);
+  background: rgba(94, 234, 212, 0.08);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+@media (max-width: 900px) {
+  .project-marquee {
+    --pm-w: 250px;
+    --pm-gap: 16px;
+  }
+  .project-marquee-card {
+    height: 157px;
+  }
+}
+
+@media (max-width: 640px) {
+  .project-marquee {
+    --pm-w: 216px;
+    --pm-gap: 12px;
+  }
+  .project-marquee-card {
+    height: 136px;
+  }
+  .project-marquee-track {
+    animation-duration: 34s;
+  }
+  .pm-name {
+    font-size: 0.92rem;
+  }
+}
+
+/* ------------------------------------------------------------
+   项目详情子面板（点击封面打开）
+   ------------------------------------------------------------ */
+.project-detail-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(4, 6, 9, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  animation: detail-fade 0.3s var(--ease-out);
+}
+
+.project-detail-panel {
+  position: relative;
+  width: min(600px, 100%);
+  max-height: 82vh;
+  overflow-y: auto;
+  padding: clamp(26px, 4vw, 44px);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-l);
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 0%, rgba(94, 234, 212, 0.06), transparent 70%),
+    linear-gradient(170deg, rgba(20, 26, 35, 0.72), rgba(8, 11, 16, 0.85));
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+  animation: detail-rise 0.32s var(--ease-out);
+}
+
+@keyframes detail-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes detail-rise {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+.detail-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line-2);
+  border-radius: 50%;
+  background: rgba(8, 11, 16, 0.6);
+  color: var(--text-2);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: color 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+}
+
+.detail-close:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.detail-type {
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+
+.detail-name {
+  margin: 10px 0 18px;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  color: var(--text-1);
+}
+
+.detail-summary {
+  color: var(--text-2);
+  font-size: 0.96rem;
+  line-height: 2;
+  margin-bottom: 20px;
+}
+
+.detail-points {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.detail-point {
+  padding: 14px 16px;
+  border: 1px solid var(--line-1);
+  border-radius: var(--radius-m);
+  background: rgba(14, 18, 24, 0.45);
+}
+
+.dp-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: var(--accent-2);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.dp-text {
+  color: var(--text-2);
+  font-size: 0.88rem;
+  line-height: 1.9;
+}
+
+.detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.detail-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.detail-links .btn {
+  padding: 10px 20px;
+  font-size: 0.76rem;
+}
+
+@media (max-width: 640px) {
+  .project-detail-mask {
+    padding: 12px;
+  }
+  .project-detail-panel {
+    padding: 24px 20px;
+    max-height: 86vh;
   }
 }

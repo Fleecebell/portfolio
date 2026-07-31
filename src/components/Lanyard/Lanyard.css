@@ -1,0 +1,84 @@
+/* 画布以当前位置为中心，上下左右各延展一整个屏幕的长宽（拖拽基本不出界）。
+   画布不拦截任何指针事件，拖拽/点击由 hero 元素（Canvas eventSource）接收 */
+.lanyard-wrapper {
+  position: absolute;
+  left: -100vw;
+  right: -100vw;
+  top: -100vh;
+  bottom: -100vh;
+  z-index: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+/* 挂牌 canvas：直接接收自身事件（拖拽/点击）；移动端允许垂直滚动阅读 */
+.lanyard-wrapper canvas {
+  pointer-events: auto;
+  touch-action: pan-y;
+}
+
+/* 3D 崩溃兜底：静态名片图 */
+.lanyard-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lanyard-fallback img {
+  height: 82%;
+  max-width: 90%;
+  border-radius: 18px;
+  border: 1px solid rgba(94, 234, 212, 0.35);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* dev 调试：3D 失败原因 */
+.lanyard-fallback-err {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 92%;
+  color: #f2c078;
+  font-size: 0.68rem;
+  font-family: var(--font-mono);
+  text-align: center;
+  word-break: break-all;
+}
+
+/* 复制成功提示：fixed 屏幕底部中央（wrapper 已延展出屏，不能用绝对定位） */
+.lanyard-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 8%;
+  transform: translateX(-50%);
+  z-index: 400;
+  padding: 10px 20px;
+  border: 1px solid rgba(94, 234, 212, 0.4);
+  border-radius: 999px;
+  background: rgba(8, 11, 16, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #e9edf4;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.45), 0 0 22px rgba(94, 234, 212, 0.08);
+  animation: lanyard-toast-in 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+@keyframes lanyard-toast-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -8px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
