@@ -205,6 +205,18 @@
   );
 }
 
+/* 视频首帧兜底图：自动播放被移动端拦截时显示（默认透明，JS 控制淡入） */
+.hero-video-poster {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.6s var(--ease-out);
+}
+
 .hero-grid {
   position: absolute;
   inset: 0;

@@ -1,8 +1,10 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import data from "../data";
 
 export default function Hero() {
   const glowRef = useRef(null);
+  const videoRef = useRef(null);
+  const posterRef = useRef(null);
 
   // 鼠标跟随光晕
   const onMove = (e) => {
@@ -13,19 +15,67 @@ export default function Hero() {
     node.style.top = `${e.clientY - rect.top}px`;
   };
 
+  // 移动端兜底：自动播放被拦截时，显示视频首帧静态图
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+
+    const showPoster = () => {
+      if (posterRef.current) posterRef.current.style.opacity = "1";
+    };
+    const hidePoster = () => {
+      if (posterRef.current) posterRef.current.style.opacity = "0";
+    };
+
+    const tryPlay = () => {
+      if (v.paused) {
+        v.play().catch(() => {
+          // 自动播放失败（iOS 低电量/数据节约等）→ 等用户首次交互再试
+          const once = () => v.play().catch(() => {});
+          window.addEventListener("touchstart", once, { once: true });
+          window.addEventListener("click", once, { once: true });
+        });
+      }
+    };
+
+    tryPlay();
+    v.addEventListener("loadeddata", tryPlay);
+    // 3 秒���未能开始播放（或被移动端拦截/无法解码）则显示静态首帧兜底
+    const t = setTimeout(() => {
+      if (v.paused || v.videoWidth === 0) showPoster();
+    }, 3000);
+    v.addEventListener(
+      "playing",
+      () => {
+        clearTimeout(t);
+        hidePoster();
+      },
+      { once: true }
+    );
+    return () => clearTimeout(t);
+  }, []);
+
   return (
     <section className="hero" id="top" onMouseMove={onMove}>
       <div className="hero-bg" aria-hidden="true">
         <video
+          ref={videoRef}
           className="hero-video"
           autoPlay
           muted
           loop
           playsInline
           preload="metadata"
+          poster="./assets/hero-bg-poster.jpg"
         >
           <source src="./assets/hero-bg.mp4" type="video/mp4" />
         </video>
+        <img
+          ref={posterRef}
+          className="hero-video-poster"
+          src="./assets/hero-bg-poster.jpg"
+          alt=""
+        />
         <div className="hero-video-overlay" />
         <div className="hero-grid" />
         <div className="hero-glow hero-glow-1" />
