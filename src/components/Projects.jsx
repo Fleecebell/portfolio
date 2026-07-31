@@ -91,7 +91,7 @@ function ProjectCard({ project, index }) {
 
 export default function Projects() {
   return (
-    <section id="projects" className="section section-alt">
+    <section id="projects" className="section">
       <div className="container">
         <Reveal>
           <header className="section-head">

@@ -10,7 +10,6 @@ export default function Experience() {
       eyebrow="Experience"
       title="履历与实习"
       desc="Education & Career"
-      alt
     >
       <Timeline items={data.experience} />
     </Section>

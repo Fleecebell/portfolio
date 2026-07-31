@@ -16,6 +16,17 @@ export default function Hero() {
   return (
     <section className="hero" id="top" onMouseMove={onMove}>
       <div className="hero-bg" aria-hidden="true">
+        <video
+          className="hero-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+        >
+          <source src="./assets/hero-bg.mp4" type="video/mp4" />
+        </video>
+        <div className="hero-video-overlay" />
         <div className="hero-grid" />
         <div className="hero-glow hero-glow-1" />
         <div className="hero-glow hero-glow-2" />

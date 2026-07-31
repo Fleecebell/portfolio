@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 const NAV_ITEMS = [
+  { idx: "00", label: "自我介绍", href: "#top" },
   { idx: "01", label: "竞赛与获奖", href: "#awards" },
   { idx: "02", label: "履历与实习", href: "#experience" },
   { idx: "03", label: "项目与能力", href: "#projects" },
