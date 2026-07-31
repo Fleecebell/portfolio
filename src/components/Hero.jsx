@@ -99,12 +99,11 @@ export default function Hero() {
         >
           <source src="./assets/hero-bg.mp4" type="video/mp4" />
         </video>
-        <img
-          ref={posterRef}
-          className="hero-video-poster"
-          src="./assets/hero-bg-poster.jpg"
-          alt=""
-        />
+        <picture ref={posterRef} className="hero-video-poster">
+          {/* 动画 WebP 兜底：微信/被拦截时背景依然在动；老浏览器回退静态首帧 */}
+          <source srcSet="./assets/hero-bg.webp" type="image/webp" />
+          <img src="./assets/hero-bg-poster.jpg" alt="" />
+        </picture>
         <div className="hero-video-overlay" />
         <div className="hero-grid" />
         <div className="hero-glow hero-glow-1" />
