@@ -1,50 +1,60 @@
 # 林赫洋 Unity 客户端作品集网站
 
-纯前端静态网站，无需后端或 Node.js。直接双击 `index.html` 即可在浏览器中打开。
+基于 **React + Vite** 的暗色科技感作品集，PC 优先（版心 1700px），移动端自适应。
+
+## 本地开发
+
+```bash
+npm install           # 安装依赖
+npm run dev           # 启动开发服务器（默认 http://localhost:5173）
+```
+
+## 构建与离线预览
+
+```bash
+npm run build         # 单文件构建，产物输出到 dist/index.html（JS/CSS 全部内联）
+```
+
+**双击 `dist/index.html` 即可在浏览器中离线打开预览**，无需启动任何服务器——图片等静态资源走相对路径 `./assets/...`，file:// 协议下也可正常加载。
+
+> 💡 项目根目录还放了一份 `preview.html`（每次 `npm run build` 后需重新生成，见下），与 `dist/index.html` 效果一致，资源引用指向 `public/assets/`，同样双击即开。
+>
+> ⚠️ 根目录的 `index.html` 是 Vite 的开发入口（包含未编译的 JSX 引用），不能像传统纯静态站点那样直接双击打开。需要预览效果时，请打开 `preview.html` 或 `dist/index.html`。
+
+```bash
+npm run build         # 重新构建 dist/index.html
+npm run preview:file  # 构建后同步生成根目录 preview.html
+```
+
+也可以使用构建产物的本地预览（行为与线上部署一致）：
+
+```bash
+npx vite preview      # 默认 http://localhost:4173
+```
 
 ## 文件结构
 
 ```text
 portfolio/
-├─ index.html              页面骨架，一般不需要改
-├─ styles/
-│  └─ main.css             全局样式、配色、排版与响应式布局
-├─ scripts/
+├─ index.html              Vite 入口
+├─ vite.config.js          构建配置（base 使用相对路径，任意子路径可部署）
+├─ public/
+│  └─ assets/              静态资源：头像、图标、项目素材、简历 PDF
+├─ src/
+│  ├─ main.jsx             应用入口
+│  ├─ App.jsx              页面组装（板块顺序在这里调整）
 │  ├─ data.js              站点内容数据（文字、项目、技能等），最常修改
-│  └─ main.js              页面渲染脚本，一般不需要改
-└─ assets/
-   ├─ projects/            项目截图与视频（project-1 到 project-4）
-   └─ resume/              简历 PDF 存放目录
+│  ├─ components/          各板块组件（Header/Hero/Awards/…）
+│  └─ styles/              设计系统（tokens/base/components）
+└─ .github/workflows/      GitHub Pages 自动构建部署
 ```
 
-## 如何打开
+## 怎么修改内容
 
-直接双击项目根目录下的 `index.html` 即可在浏览器中查看。
+所有文字内容都在 `src/data.js`，结构与原版一致，常见修改位置：
 
-如果浏览器安全策略导致本地资源加载异常，可在项目目录下启动本地服务器：
-
-```powershell
-python -m http.server 5173
-```
-
-然后访问：
-
-```text
-http://localhost:5173
-```
-
-## 怎么修改文字
-
-主要改这个文件：
-
-```text
-scripts/data.js
-```
-
-常见修改位置：
-
-- `profile.summary`：首页个人介绍
-- `stats`：首页四个核心数据
+- `profile`：首页个人介绍
+- `intro`：作品集定位四原则
 - `projects`：项目名称、类型、职责、技术栈、项目描述
 - `skills`：技能矩阵和掌握状态
 - `aiWorkflow`：AI 辅助开发工作流
@@ -53,7 +63,7 @@ scripts/data.js
 - `roadmap`：学习路线
 - `contactLinks`：GitHub、TapTap、邮箱、简历链接
 
-技能状态建议只用这三个值：
+技能状态建议只用这三个值（页面颜色会自动匹配）：
 
 ```text
 已具备
@@ -61,15 +71,12 @@ scripts/data.js
 目标
 ```
 
-这样页面颜色会自动匹配。
-
 ## 怎么新增一个项目
 
-1. 打开 `scripts/data.js`
-2. 找到 `projects: [` 这一段
-3. 复制一个完整项目对象
-4. 修改 `name`、`type`、`role`、`status`、`links`、`tags`、`summary`、`points` 和 `media`
-5. 在 `assets/projects/` 下新建对应素材文件夹，例如 `project-5`
+1. 打开 `src/data.js`，找到 `projects: [`
+2. 复制一个完整项目对象，修改各字段
+3. 截图放入 `public/assets/projects/project-N/`，在 `media.images` 中填入路径
+4. 有视频则在 `media.video` 中填入 mp4 路径
 
 项目对象模板：
 
@@ -79,120 +86,56 @@ scripts/data.js
   type: "项目类型 / 比赛或平台",
   role: "主程序",
   status: "已具备",
-  links: ["GitHub 链接", "Demo 链接"],
+  links: [
+    { label: "GitHub", href: "https://..." },
+  ],
   tags: ["Unity", "C#", "UI 框架"],
   media: {
-    images: [
-      "./assets/projects/project-5/image-1.png",
-      "./assets/projects/project-5/image-2.png",
-      "./assets/projects/project-5/image-3.png",
-    ],
-    video: "./assets/projects/project-5/video.mp4",
+    images: ["./assets/projects/project-5/image-1.png", "", ""],
+    video: "",
   },
   summary: "一句话说明这个项目的价值。",
   points: [
-    {
-      label: "我的职责",
-      text: "说明你负责了哪些核心模块。",
-    },
-    {
-      label: "技术难点",
-      text: "说明你解决了什么问题，以及为什么这样做。",
-    },
+    { label: "我的职责", text: "说明你负责了哪些核心模块。" },
+    { label: "技术难点", text: "说明你解决了什么问题。" },
   ],
 }
 ```
 
-注意：上一个项目对象后面要有英文逗号 `,`，否则 JS 会报错。
+注意：上一个项目对象后面要有英文逗号 `,`。
 
-## 怎么新增技能
+## 怎么调整页面结构
 
-打开 `scripts/data.js`，找到 `skills: [`，复制一个技能对象：
+板块顺序、增删板块在 `src/App.jsx` 中调整：
 
-```js
-{
-  group: "技能组名称",
-  status: "补强中",
-  items: ["能力点 1", "能力点 2", "能力点 3"],
-}
+```jsx
+<Hero />
+<Intro />      {/* 定位四原则 */}
+<Awards />     {/* 01 竞赛与获奖 */}
+<Experience /> {/* 02 履历与实习 */}
+<Projects />   {/* 03 精选项目 */}
+<Skills />     {/* 04 技能矩阵 */}
+<AiWorkflow /> {/* 05 AI 工作流 */}
+<Roadmap />    {/* 成长路线 */}
+<Contact />    {/* 06 联系与资料 */}
 ```
 
-如果你已经做出可展示项目证据，再把 `status` 改成 `已具备`。
+删除某行即从页面移除对应板块（数据仍保留在 data.js）。
 
-## 怎么替换头像
+导航项在 `src/components/Header.jsx` 的 `NAV_ITEMS` 中维护。
 
-当前首页是文字头像占位。如果你要换成真实头像：
+## 视觉定制
 
-1. 把头像放到 `assets/avatar.jpg`
-2. 打开 `index.html`
-3. 找到：
+设计系统集中在 `src/styles/`：
 
-```html
-<div class="avatar-placeholder">头像占位</div>
-```
-
-4. 替换成：
-
-```html
-<img class="avatar-image" src="./assets/avatar.jpg" alt="林赫洋头像" />
-```
-
-然后在 `styles/main.css` 最后加：
-
-```css
-.avatar-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-```
-
-## 怎么替换项目图片和视频
-
-建议按这个结构放素材：
-
-```text
-assets/projects/project-1/image-1.png
-assets/projects/project-1/image-2.png
-assets/projects/project-1/image-3.png
-assets/projects/project-1/video.mp4
-```
-
-然后打开 `scripts/data.js`，找到对应项目的 `media`：
-
-```js
-media: {
-  images: [
-    "./assets/projects/project-1/image-1.png",
-    "./assets/projects/project-1/image-2.png",
-    "./assets/projects/project-1/image-3.png",
-  ],
-  video: "./assets/projects/project-1/video.mp4",
-},
-```
-
-如果某一项留空字符串 `""`，页面会继续显示占位块。
-
-## 怎么放简历 PDF
-
-把最终简历文件复制到：
-
-```text
-assets/resume/resume.pdf
-```
-
-页面底部的“简历 PDF”按钮已经默认指向这个位置。
+- `tokens.css`：颜色、字体、间距、圆角等设计变量
+- `base.css`：重置、全局、按钮、状态标签
+- `components.css`：各组件样式与响应式断点
 
 ## 怎么部署到 GitHub Pages
 
-1. 新建一个 GitHub 仓库
-2. 上传 `portfolio` 文件夹里的所有内容
-3. 在仓库 Settings 中找到 Pages
-4. Source 选择 `Deploy from a branch`
-5. Branch 选择 `main` 和 `/root`
-6. 保存后等待 GitHub 生成访问链接
+1. 推送到 GitHub 仓库 main 分支（`workflows/pages.yml` 会自动构建部署）
+2. 仓库 Settings → Pages → Source 选择 `GitHub Actions`
+3. 等待 Actions 运行完成即可访问
 
-## 后续建议
-
-这个版本的内容故意保留了“已具备 / 补强中 / 目标”状态。等你把某项能力学完并做出证据型项目后，再把状态改成“已具备”，并补充对应项目链接、截图、视频和技术复盘。
+本地构建产物在 `dist/`，也可手动上传该目录到任意静态托管。

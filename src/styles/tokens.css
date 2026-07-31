@@ -1,0 +1,57 @@
+/* ============================================================
+   Design Tokens — 暗色科技感设计系统
+   背景：深蓝黑分层 | 强调：teal + 冰蓝，克制使用
+   ============================================================ */
+:root {
+  /* 背景层次（由深到浅） */
+  --bg-0: #05070a;
+  --bg-1: #090c11;
+  --bg-2: #0e1218;
+  --bg-3: #141a23;
+  --bg-4: #1a222e;
+
+  /* 线条 */
+  --line-1: rgba(148, 170, 200, 0.08);
+  --line-2: rgba(148, 170, 200, 0.16);
+  --line-3: rgba(148, 170, 200, 0.28);
+
+  /* 文字 */
+  --text-1: #e9edf4;
+  --text-2: #9aa5b6;
+  --text-3: #5f6a7b;
+
+  /* 强调 */
+  --accent: #5eead4;
+  --accent-2: #7cc7ff;
+  --accent-dim: rgba(94, 234, 212, 0.14);
+  --accent-glow: rgba(94, 234, 212, 0.35);
+
+  /* 状态色 */
+  --ok: #5eead4;
+  --wip: #f2c078;
+  --todo: #7c8aa0;
+
+  /* 字体 */
+  --font-sans: "PingFang SC", "HarmonyOS Sans SC", "MiSans", "Source Han Sans SC",
+    "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "Cascadia Code", "SF Mono", "Fira Code",
+    Consolas, "Courier New", monospace;
+
+  /* 版心与间距 */
+  --container: 1700px;
+  --gutter: clamp(20px, 4vw, 56px);
+  --section-gap: clamp(96px, 10vw, 160px);
+
+  /* 圆角 */
+  --radius-s: 6px;
+  --radius-m: 10px;
+  --radius-l: 16px;
+
+  /* 阴影 */
+  --shadow-card: 0 20px 60px rgba(0, 0, 0, 0.35);
+  --shadow-glow: 0 0 0 1px var(--accent-dim), 0 0 40px var(--accent-dim);
+
+  /* 缓动 */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-io: cubic-bezier(0.65, 0, 0.35, 1);
+}

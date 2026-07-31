@@ -1,0 +1,247 @@
+/* ============================================================
+   Base — 重置、全局、动效基座
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg-0);
+  color: var(--text-1);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+}
+
+::selection {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-0);
+}
+::-webkit-scrollbar-thumb {
+  background: #1c232e;
+  border-radius: 5px;
+  border: 2px solid var(--bg-0);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #27303e;
+}
+
+/* ============================================================
+   布局工具
+   ============================================================ */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* ============================================================
+   Reveal 滚动动效（由 useReveal 注入 .is-inview）
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.9s var(--ease-out),
+    transform 0.9s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.reveal.is-inview {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ============================================================
+   通用小元素
+   ============================================================ */
+
+/* mono 标签（编号、字段名、状态） */
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+/* 区块标题 eyebrow：行首短线 + 编号 */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+
+/* 状态标签 */
+.status-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 3px 12px;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--text-2);
+  background: var(--bg-2);
+  white-space: nowrap;
+}
+
+.status-tag::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.status-tag[data-status="已具备"] {
+  color: var(--ok);
+  border-color: rgba(94, 234, 212, 0.3);
+}
+
+.status-tag[data-status="补强中"] {
+  color: var(--wip);
+  border-color: rgba(242, 192, 120, 0.3);
+}
+
+.status-tag[data-status="目标"] {
+  color: var(--todo);
+  border-color: rgba(124, 138, 160, 0.3);
+}
+
+/* 普通按钮（链接） */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  border: 1px solid var(--line-3);
+  border-radius: var(--radius-s);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  color: var(--text-1);
+  background: transparent;
+  transition:
+    border-color 0.35s var(--ease-out),
+    color 0.35s var(--ease-out),
+    background 0.35s var(--ease-out),
+    box-shadow 0.35s var(--ease-out),
+    transform 0.35s var(--ease-out);
+}
+
+.btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 24px var(--accent-dim);
+  transform: translateY(-1px);
+}
+
+.btn .btn-ico {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  filter: brightness(0) invert(1) opacity(0.85);
+}
+
+.btn:hover .btn-ico {
+  filter: brightness(0) invert(1) sepia(1) saturate(3) hue-rotate(120deg);
+}
+
+.btn-primary {
+  border-color: var(--accent);
+  color: var(--bg-0);
+  background: var(--accent);
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  color: var(--bg-0);
+  background: var(--accent);
+  box-shadow: 0 0 32px var(--accent-glow);
+}

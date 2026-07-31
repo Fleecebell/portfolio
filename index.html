@@ -3,86 +3,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#08090d" />
     <title>羊毛Fleece_ | Unity 客户端开发作品集</title>
     <meta
       name="description"
       content="羊毛Fleece_ 的 Unity 客户端开发作品集，展示项目经历与技术能力。"
     />
-    <link rel="stylesheet" href="./styles/main.css" />
+    <link rel="icon" type="image/jpeg" href="./assets/avatar.jpg" />
   </head>
   <body>
-    <header class="site-header">
-      <a class="brand" href="#top" aria-label="回到首页">
-        <img class="brand-avatar" src="./assets/avatar.jpg" alt="头像" />
-        <span>羊毛Fleece_</span>
-      </a>
-      <nav class="nav" aria-label="主导航">
-        <a href="#awards">竞赛与获奖</a>
-        <a href="#experience">履历与实习</a>
-        <a href="#projects">作品与能力</a>
-        <a href="#contact">联系与资料</a>
-      </nav>
-    </header>
-
-    <main id="top">
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-backdrop" aria-hidden="true">
-          <div class="grid-plane"></div>
-        </div>
-        <div class="hero-content">
-          <h1 id="hero-title">林赫洋</h1>
-          <p class="hero-copy" id="profile-summary"></p>
-          <div class="hero-actions">
-            <a class="button" href="#awards">竞赛与获奖</a>
-            <a class="button" href="#experience">履历与实习</a>
-            <a class="button" href="#projects">作品与能力</a>
-            <a class="button" href="#contact">联系与资料</a>
-          </div>
-        </div>
-      </section>
-
-      <section class="section band" id="awards" aria-labelledby="awards-title">
-        <div class="section-head compact">
-          <p class="eyebrow">Awards</p>
-          <h2 id="awards-title">竞赛与获奖</h2>
-        </div>
-        <div class="timeline" id="awards-list"></div>
-      </section>
-
-      <section class="section" id="experience" aria-labelledby="experience-title">
-        <div class="section-head compact">
-          <p class="eyebrow">Experience</p>
-          <h2 id="experience-title">履历与实习</h2>
-        </div>
-        <div class="timeline" id="experience-list"></div>
-      </section>
-
-      <section class="section band" id="projects" aria-labelledby="projects-title">
-        <div class="section-head">
-          <p class="eyebrow">Projects</p>
-          <h2 id="projects-title">精选项目</h2>
-        </div>
-        <div class="project-list" id="project-list"></div>
-      </section>
-
-      <section class="section band contact" id="contact" aria-labelledby="contact-title">
-        <div class="section-head">
-          <p class="eyebrow">Contact</p>
-          <h2 id="contact-title">联系与材料</h2>
-        </div>
-        <div class="contact-panel">
-          <p id="contact-copy"></p>
-          <div class="contact-links" id="contact-links"></div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <span>© <span id="year"></span> 林赫洋</span>
-      <span>Unity Client Portfolio</span>
-    </footer>
-
-    <script src="./scripts/data.js"></script>
-    <script src="./scripts/main.js"></script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

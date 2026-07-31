@@ -1,0 +1,22 @@
+{
+  "name": "unity-client-portfolio",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "description": "林赫洋 · Unity 客户端开发作品集",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "preview:file": "vite build && node scripts/make-preview.mjs"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.11",
+    "vite-plugin-singlefile": "^2.3.3"
+  }
+}

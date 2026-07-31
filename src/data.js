@@ -1,4 +1,5 @@
-window.PORTFOLIO_DATA = {
+// 站点内容数据 —— 内容与原版完全一致，仅改为 ES Module 导出
+export default {
   profile: {
     name: "林赫洋",
     school: "哈尔滨理工大学",
