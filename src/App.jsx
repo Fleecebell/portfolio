@@ -30,6 +30,17 @@ function CursorGlow() {
 }
 
 export default function App() {
+  // 手机版：页面加载后直接定位滚动到「自我介绍」（#intro），
+  // 挂牌提示「点击挂牌以继续」引导用户回到顶部交互
+  useEffect(() => {
+    if (typeof window === "undefined" || window.innerWidth >= 641) return;
+    const t = setTimeout(() => {
+      const el = document.getElementById("intro");
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 900); // 等 hero 入场动画与挂牌 3D 初始化
+    return () => clearTimeout(t);
+  }, []);
+
   return (
     <>
       <Header />

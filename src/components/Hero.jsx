@@ -109,6 +109,8 @@ export default function Hero() {
         {/* 挂牌（左列/上方）：在自我介绍之前 */}
         <aside className="hero-lanyard">
           <Lanyard gravity={[0, -40, 0]} />
+          {/* 手机端：挂牌下方操作提示 */}
+          <div className="lanyard-hint">点击挂牌以继续</div>
         </aside>
 
         {/* 自我介绍（右列/下方），锚点 #intro 定位到标题 */}
