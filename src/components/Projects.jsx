@@ -155,18 +155,19 @@ export default function Projects() {
         {/* 详情子面板 */}
         {selected && (
           <div className="project-detail-mask" onClick={closeDetail}>
+            {/* 关闭按钮挂在遮罩层（无 transform 动画），fixed 始终相对视口，
+                不会因面板动画而瞬移 */}
+            <button
+              className="detail-close"
+              aria-label="关闭"
+              onClick={closeDetail}
+            >
+              ✕
+            </button>
             <div
               className="project-detail-panel"
               onClick={(e) => e.stopPropagation()}
             >
-              <button
-                className="detail-close"
-                aria-label="关闭"
-                onClick={closeDetail}
-              >
-                ✕
-              </button>
-
               {selected.type && (
                 <span className="detail-type mono">{selected.type}</span>
               )}

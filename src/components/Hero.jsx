@@ -3,18 +3,8 @@ import Lanyard from "./Lanyard/Lanyard";
 import data from "../data";
 
 export default function Hero() {
-  const glowRef = useRef(null);
   const videoRef = useRef(null);
   const posterRef = useRef(null);
-
-  // 鼠标跟随光晕
-  const onMove = (e) => {
-    const node = glowRef.current;
-    if (!node) return;
-    const rect = node.parentElement.getBoundingClientRect();
-    node.style.left = `${e.clientX - rect.left}px`;
-    node.style.top = `${e.clientY - rect.top}px`;
-  };
 
   // 移动端兜底：自动播放被拦截时，显示视频首帧静态图
   useEffect(() => {
@@ -91,7 +81,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="hero" id="top" onMouseMove={onMove}>
+    <section className="hero" id="top">
       <div className="hero-bg" aria-hidden="true">
         <video
           ref={videoRef}
@@ -111,22 +101,14 @@ export default function Hero() {
           <img src="./assets/hero-bg-poster.jpg" alt="" />
         </picture>
         <div className="hero-video-overlay" />
-        <div className="hero-video-shade" />
-        <div className="hero-grid" />
         <div className="hero-glow hero-glow-1" />
         <div className="hero-glow hero-glow-2" />
-        <div className="hero-cursor-glow" ref={glowRef} />
       </div>
 
       <div className="container hero-inner">
         {/* 挂牌（左列/上方）：在自我介绍之前 */}
         <aside className="hero-lanyard">
-          <Lanyard
-            gravity={[0, -40, 0]}
-            frontImage="./assets/lanyard/front.png"
-            backImage="./assets/lanyard/back.png"
-            imageFit="cover"
-          />
+          <Lanyard gravity={[0, -40, 0]} />
         </aside>
 
         {/* 自我介绍（右列/下方），锚点 #intro 定位到标题 */}

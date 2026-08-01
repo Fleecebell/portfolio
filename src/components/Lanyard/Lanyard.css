@@ -13,7 +13,8 @@
   pointer-events: none;
 }
 
-/* 挂牌 canvas：直接接收自身事件（拖拽/点击）；移动端允许垂直滚动阅读 */
+/* 挂牌 canvas：直接接收事件（立牌可点击/拖拽）；移动端允许垂直滚动阅读。
+   画布延展覆盖其他栏目由各 section 提升 z-index 盖住（见 components.css），不拦截 */
 .lanyard-wrapper canvas {
   pointer-events: auto;
   touch-action: pan-y;

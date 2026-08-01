@@ -13,6 +13,10 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 0;
+  /* 禁止 html 层横向滚动：body 的 overflow-x:hidden 只裁剪 body，
+     html 层（滚动容器）仍需 hidden，否则立牌画布/轮播轨道溢出的宽文档
+     会让页面出现横向滚动条，内容被横向滚动而整体偏移 */
+  overflow-x: hidden;
   -webkit-text-size-adjust: 100%;
 }
 

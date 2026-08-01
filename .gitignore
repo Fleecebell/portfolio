@@ -1,5 +1,11 @@
-node_modules
-dist
-*.local
+# 依赖与构建产物
+node_modules/
+dist/
+
+# preview.html 使用的静态资源副本（源文件在 public/，构建后自动复制到根目录 assets/）
+assets/
+
+# 系统文件
 .DS_Store
-.workbuddy
+Thumbs.db
+*.local

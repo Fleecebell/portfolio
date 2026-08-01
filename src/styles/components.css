@@ -133,7 +133,11 @@
 }
 
 .nav-toggle {
-  display: none;
+  /* 始终显示（手机端）；桌面端用 min-width 单独隐藏（与主导航 1080 切换一致） */
+  display: flex;
+  position: fixed;
+  top: 16px;
+  right: var(--gutter);
   width: 42px;
   height: 42px;
   border: 1px solid var(--line-2);
@@ -142,6 +146,27 @@
   align-items: center;
   justify-content: center;
   gap: 5px;
+  background: rgba(5, 7, 10, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  cursor: pointer;
+  z-index: 110;
+  padding: 0;
+}
+
+@media (min-width: 1081px) {
+  .nav-toggle {
+    display: none;
+  }
+}
+/* 汉堡条 */
+.nav-toggle span {
+  display: block;
+  width: 18px;
+  height: 1.5px;
+  background: var(--text-2);
+  border-radius: 1px;
+  transition: transform 0.3s var(--ease-out), opacity 0.3s var(--ease-out);
 }
 
 .nav-toggle span {
@@ -194,34 +219,16 @@
   filter: saturate(0.85);
 }
 
-/* 视频暗色遮罩（全屏固定），保证前景文字可读 */
+/* 视频暗色蒙版：固定全屏、均匀半透明（不随滚动/鼠标移动），统一压暗背景视频 */
 .hero-video-overlay {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(
-    180deg,
-    rgba(5, 7, 10, 0.52) 0%,
-    rgba(5, 7, 10, 0.28) 45%,
-    rgba(5, 7, 10, 0.66) 100%
-  );
+  background: rgba(5, 7, 10, 0.5);
 }
 
-/* 上半屏压暗层：上 70% 高度，不透明度 88% → 0 渐变（压住偏亮的上半屏） */
-.hero-video-shade {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 70vh;
-  z-index: -1;
-  background: linear-gradient(
-    180deg,
-    rgba(5, 7, 10, 0.88) 0%,
-    rgba(5, 7, 10, 0) 100%
-  );
-  pointer-events: none;
-}
+/* 上半屏压暗层：上 70% 高度，不透明度 88% → 0 渐变（压住偏亮的上半屏）——已由
+   全屏均匀蒙版替代，移除 */
 
 /* 微信端「点击播放高清背景」提示按钮：导航栏内的独立按钮（汉堡菜单左侧） */
 .hero-video-hint {
@@ -272,21 +279,19 @@
   display: block;
 }
 
-.hero-grid {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(var(--line-1) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line-1) 1px, transparent 1px);
-  background-size: 72px 72px;
-  mask-image: radial-gradient(ellipse 90% 70% at 50% 40%, black 30%, transparent 75%);
-  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 40%, black 30%, transparent 75%);
-  animation: grid-drift 60s linear infinite;
-}
-
-@keyframes grid-drift {
-  from { background-position: 0 0, 0 0; }
-  to { background-position: 0 72px, 72px 0; }
+/* 全局鼠标跟随光晕（微弱、覆盖全页、不拦截交互） */
+.global-cursor-glow {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(94, 234, 212, 0.055), transparent 60%);
+  transform: translate(-999px, -999px);
+  pointer-events: none;
+  z-index: 90;
+  will-change: transform;
 }
 
 .hero-glow {
@@ -319,23 +324,6 @@
   to { transform: translate3d(-40px, 30px, 0) scale(1.08); }
 }
 
-/* 鼠标跟随光晕 */
-.hero-cursor-glow {
-  position: absolute;
-  width: 480px;
-  height: 480px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(94, 234, 212, 0.06), transparent 60%);
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.6s var(--ease-out);
-}
-
-.hero:hover .hero-cursor-glow {
-  opacity: 1;
-}
-
 .hero-inner {
   position: relative;
   z-index: 1;
@@ -349,7 +337,7 @@
 
 /* 左侧：标题区 */
 .hero-title {
-  font-size: clamp(38px, 6.5vw, 96px);
+  font-size: clamp(32px, 5.5vw, 80px);
   font-weight: 700;
   line-height: 0.98;
   letter-spacing: 0.02em;
@@ -1245,6 +1233,8 @@
    页脚
    ------------------------------------------------------------ */
 .site-footer {
+  position: relative;
+  z-index: 1;
   border-top: 1px solid var(--line-1);
   padding: 40px 0;
 }
@@ -1404,6 +1394,23 @@
   .skill-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ------------------------------------------------------------
+   层叠修正：挂牌画布四向延展会覆盖 hero 下方的区块（透明但拦截指针）。
+   将 hero 之后的区块提升到画布之上——透明画布被盖住即不拦截交互，
+   立牌在 hero 区域内仍正常点击/拖拽。
+   ------------------------------------------------------------ */
+main > section:not(.hero) {
+  position: relative;
+  z-index: 1;
+}
+
+/* 竞赛与获奖：整个内容上移 180px。
+   用 margin-top 负值（而非 transform）——布局随之上移，后续所有内容联动，
+   各 section 锚点（scroll-margin-top）自动适配新布局位置 */
+#awards {
+  margin-top: -180px;
 }
 
 /* ------------------------------------------------------------
@@ -1647,19 +1654,23 @@
 }
 
 .detail-close {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  width: 34px;
-  height: 34px;
+  /* fixed 钉在屏幕右上角：面板内容滚动时关闭按钮始终可见 */
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 210;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 1px solid var(--line-2);
   border-radius: 50%;
-  background: rgba(8, 11, 16, 0.6);
+  background: rgba(8, 11, 16, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: var(--text-2);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   cursor: pointer;
   transition: color 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
 }

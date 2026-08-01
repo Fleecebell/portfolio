@@ -7,6 +7,9 @@ import { BallCollider, CuboidCollider, Physics, RigidBody, useRopeJoint, useSphe
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import * as THREE from 'three';
 import './Lanyard.css';
+// 挂牌正反面图：?inline 构建时内联为 data URI（file:// 下 WebGL 纹理不受跨域限制）
+import frontCardPng from './cards/front.png?inline';
+import backCardPng from './cards/back.png?inline';
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
@@ -219,8 +222,8 @@ export default function Lanyard({
   gravity = [0, -40, 0],
   fov = 44,
   transparent = true,
-  frontImage = null,
-  backImage = null,
+  frontImage = frontCardPng,
+  backImage = backCardPng,
   imageFit = 'cover',
   lanyardImage = null,
   lanyardWidth = 0.4,
@@ -271,11 +274,10 @@ export default function Lanyard({
           gl={{ alpha: transparent }}
           onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
         >
-          {/* 柔和光源：保留立体感但比原值弱，高光从侧上方来（不闪眼） */}
+          {/* 中性白光为主（去掉冷色/teal 光源，避免立牌蒙蓝） */}
           <ambientLight intensity={1.0} />
-          <directionalLight position={[4, 5, 3]} intensity={1.35} color="#f2f6fc" />
-          <directionalLight position={[-5, 1, 4]} intensity={0.5} color="#7cc7ff" />
-          <pointLight position={[0, 2, 5]} intensity={12} color="#5eead4" />
+          <directionalLight position={[4, 5, 3]} intensity={1.4} color="#ffffff" />
+          <directionalLight position={[-5, 1, 4]} intensity={0.5} color="#ffffff" />
           <Physics gravity={gravity} timeStep={isMobile ? 1 / 30 : 1 / 60}>
             <Band
               isMobile={isMobile}
@@ -497,7 +499,12 @@ function Band({
         curve.points[1].copy(j2.current.lerped);
         curve.points[2].copy(j1.current.lerped);
         curve.points[3].copy(fixed.current.translation());
-        band.current.geometry.setPoints(curve.getPoints(isMobile ? 16 : 32));
+        // 防御：物理初始化/摆动期间 translation 可能为 NaN，跳过该帧避免挂绳几何 NaN
+        const bandPoints = curve.getPoints(isMobile ? 16 : 32);
+        const validBand = bandPoints.every(
+          (p) => isFinite(p.x) && isFinite(p.y) && isFinite(p.z)
+        );
+        if (validBand) band.current.geometry.setPoints(bandPoints);
         ang.copy(card.current.angvel());
         rot.copy(card.current.rotation());
         card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z });

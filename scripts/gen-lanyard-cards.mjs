@@ -1,7 +1,9 @@
 // 生成挂牌（Lanyard）正反面图片
 // 图片比例 711×1000 = 卡片几何比例（0.711:1）= atlas 半区比例 → 无裁切无拉伸
-// 输出：public/assets/lanyard/front.png、back.png
-import { readFileSync, mkdirSync } from 'node:fs';
+// 输出：public/assets/lanyard/front.png、back.png（部署用）
+//       同时复制到 src/components/Lanyard/cards/（组件以 ?inline 导入，
+//       构建时内联为 data URI —— file:// 打开 preview.html 时 WebGL 纹理不受跨域限制）
+import { readFileSync, mkdirSync, copyFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
@@ -9,7 +11,9 @@ import sharp from 'sharp';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
 const OUT = resolve(ROOT, 'public/assets/lanyard');
+const INLINE_OUT = resolve(ROOT, 'src/components/Lanyard/cards');
 mkdirSync(OUT, { recursive: true });
+mkdirSync(INLINE_OUT, { recursive: true });
 
 const avatar = readFileSync(resolve(ROOT, 'public/assets/avatar.jpg')).toString('base64');
 
@@ -111,4 +115,8 @@ async function render(svg, outFile) {
 
 await render(frontSvg, resolve(OUT, 'front.png'));
 await render(backSvg, resolve(OUT, 'back.png'));
+// 同步一份给组件内联导入（data URI，file:// 下 WebGL 可用）
+copyFileSync(resolve(OUT, 'front.png'), resolve(INLINE_OUT, 'front.png'));
+copyFileSync(resolve(OUT, 'back.png'), resolve(INLINE_OUT, 'back.png'));
+console.log('synced to src/components/Lanyard/cards/');
 console.log('done.');
