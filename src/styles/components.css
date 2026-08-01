@@ -227,43 +227,6 @@
   background: rgba(5, 7, 10, 0.5);
 }
 
-/* 上半屏压暗层：上 70% 高度，不透明度 88% → 0 渐变（压住偏亮的上半屏）——已由
-   全屏均匀蒙版替代，移除 */
-
-/* 微信端「点击播放高清背景」提示按钮：导航栏内的独立按钮（汉堡菜单左侧） */
-.hero-video-hint {
-  display: inline-flex;
-  align-items: center;
-  padding: 7px 14px;
-  margin-right: 10px;
-  border: 1px solid rgba(148, 170, 200, 0.22);
-  border-radius: 999px;
-  background: rgba(8, 11, 16, 0.5);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  color: rgba(233, 237, 244, 0.72);
-  font-size: 0.7rem;
-  letter-spacing: 0.06em;
-  white-space: nowrap;
-  opacity: 0.75;
-  transition: opacity 0.3s var(--ease-out);
-}
-
-.hero-video-hint:hover {
-  opacity: 1;
-  border-color: rgba(94, 234, 212, 0.4);
-  color: var(--accent);
-}
-
-@media (max-width: 640px) {
-  .hero-video-hint {
-    font-size: 0.62rem;
-    padding: 5px 10px;
-    /* 给固定右上角的汉堡栏（42px + 间距）让位，避免重叠 */
-    margin-right: 54px;
-  }
-}
-
 /* 视频兜底层：优先动画 WebP（微信等被拦截时背景依然动态），老浏览器回退静态首帧 */
 .hero-video-poster {
   position: fixed;
@@ -1358,11 +1321,7 @@
      取消全局 transform 的视觉上移，避免叠加 */
   .hero-main {
     transform: none;
-    margin-top: 500px;
-  }
-  /* 手机版：取消奖项全局上移 180px，恢复与各栏目一致的统一间距 */
-  #awards {
-    margin-top: 0;
+    margin-top: 200px;
   }
   .intro-grid {
     grid-template-columns: 1fr;
@@ -1418,11 +1377,12 @@ main > section:not(.hero) {
   z-index: 1;
 }
 
-/* 竞赛与获奖：整个内容上移 180px。
-   用 margin-top 负值（而非 transform）——布局随之上移，后续所有内容联动，
-   各 section 锚点（scroll-margin-top）自动适配新布局位置 */
-#awards {
-  margin-top: -180px;
+/* 竞赛与获奖：电脑/平板上移 180px（margin 负值，布局联动）。
+   仅非手机端生效——手机端（≤640px）保持正常间距，与各栏目统一 */
+@media (min-width: 641px) {
+  #awards {
+    margin-top: -180px;
+  }
 }
 
 /* ------------------------------------------------------------

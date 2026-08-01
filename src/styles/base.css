@@ -185,14 +185,3 @@ h4 {
   box-shadow: 0 0 24px var(--accent-dim);
   transform: translateY(-1px);
 }
-
-.btn .btn-ico {
-  width: 18px;
-  height: 18px;
-  object-fit: contain;
-  filter: brightness(0) invert(1) opacity(0.85);
-}
-
-.btn:hover .btn-ico {
-  filter: brightness(0) invert(1) sepia(1) saturate(3) hue-rotate(120deg);
-}

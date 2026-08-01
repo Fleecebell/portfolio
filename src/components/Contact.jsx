@@ -37,14 +37,6 @@ export default function Contact() {
                   rel="noopener noreferrer"
                   key={link.label}
                 >
-                  {link.icon && (
-                    <img
-                      className="btn-ico"
-                      src={link.icon}
-                      alt=""
-                      aria-hidden="true"
-                    />
-                  )}
                   {link.label}
                 </a>
               ))}

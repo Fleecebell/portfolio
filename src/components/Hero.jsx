@@ -63,11 +63,18 @@ export default function Hero() {
         played = true;
         clearTimeout(t);
         hidePoster();
-        // 视频开始播放后，隐藏导航栏上的微信提示按钮
-        document.querySelector(".hero-video-hint")?.remove();
       },
       { once: true }
     );
+    // 页面从后台切回时，若视频被浏览器（系统浏览器后台冻结机制）暂停，自动恢复播放
+    const resumePlay = () => {
+      if (!document.hidden && v.paused && v.videoWidth > 0) {
+        v.play().catch(() => {});
+      }
+    };
+    document.addEventListener("visibilitychange", resumePlay);
+    window.addEventListener("pageshow", resumePlay);
+
     return () => {
       clearTimeout(t);
       clearInterval(retry);
@@ -77,6 +84,8 @@ export default function Hero() {
       ["scroll", "keydown"].forEach((ev) =>
         window.removeEventListener(ev, onInteract)
       );
+      document.removeEventListener("visibilitychange", resumePlay);
+      window.removeEventListener("pageshow", resumePlay);
     };
   }, []);
 
@@ -109,8 +118,6 @@ export default function Hero() {
         {/* 挂牌（左列/上方）：在自我介绍之前 */}
         <aside className="hero-lanyard">
           <Lanyard gravity={[0, -40, 0]} />
-          {/* 手机端：挂牌下方操作提示 */}
-          <div className="lanyard-hint">点击挂牌以继续</div>
         </aside>
 
         {/* 自我介绍（右列/下方），锚点 #intro 定位到标题 */}

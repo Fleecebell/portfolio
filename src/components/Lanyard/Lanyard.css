@@ -92,23 +92,3 @@
     font-size: 0.72rem;
   }
 }
-
-/* 手机端：挂牌下方的操作小提示 */
-.lanyard-hint {
-  display: none;
-  position: absolute;
-  bottom: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: rgba(150, 165, 185, 0.75);
-  font-size: 0.72rem;
-  letter-spacing: 0.1em;
-  white-space: nowrap;
-  pointer-events: none;
-  z-index: 2;
-}
-@media (max-width: 640px) {
-  .lanyard-hint {
-    display: block;
-  }
-}

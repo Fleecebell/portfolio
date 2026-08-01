@@ -12,10 +12,6 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("");
-  // 微信端显示「点击播放高清背景」独立按钮（仅微信 UA）
-  const [hintOn, setHintOn] = useState(() =>
-    /MicroMessenger/i.test(navigator.userAgent)
-  );
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -81,18 +77,6 @@ export default function Header() {
             </a>
           ))}
         </nav>
-
-        {hintOn && (
-          <button
-            className="hero-video-hint"
-            onClick={() => {
-              setHintOn(false);
-              document.querySelector(".hero-video")?.play().catch(() => {});
-            }}
-          >
-            点击播放高清背景
-          </button>
-        )}
 
         <button
           className="nav-toggle"
