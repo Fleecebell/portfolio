@@ -227,6 +227,40 @@
   background: rgba(5, 7, 10, 0.5);
 }
 
+/* 微信端「点击播放高清背景」提示按钮：导航栏内的独立按钮（汉堡菜单左侧） */
+.hero-video-hint {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 14px;
+  margin-right: 10px;
+  border: 1px solid rgba(148, 170, 200, 0.22);
+  border-radius: 999px;
+  background: rgba(8, 11, 16, 0.5);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: rgba(233, 237, 244, 0.72);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  opacity: 0.75;
+  transition: opacity 0.3s var(--ease-out);
+}
+
+.hero-video-hint:hover {
+  opacity: 1;
+  border-color: rgba(94, 234, 212, 0.4);
+  color: var(--accent);
+}
+
+@media (max-width: 640px) {
+  .hero-video-hint {
+    font-size: 0.62rem;
+    padding: 5px 10px;
+    /* 给固定右上角的汉堡栏（42px + 间距）让位，避免重叠 */
+    margin-right: 54px;
+  }
+}
+
 /* 视频兜底层：优先动画 WebP（微信等被拦截时背景依然动态），老浏览器回退静态首帧 */
 .hero-video-poster {
   position: fixed;

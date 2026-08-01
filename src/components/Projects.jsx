@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import Reveal from "./Reveal";
 import data from "../data";
 import covers from "virtual:project-covers";
@@ -152,73 +153,80 @@ export default function Projects() {
           </div>
         )}
 
-        {/* 详情子面板 */}
-        {selected && (
-          <div className="project-detail-mask" onClick={closeDetail}>
-            {/* 关闭按钮挂在遮罩层（无 transform 动画），fixed 始终相对视口，
-                不会因面板动画而瞬移 */}
-            <button
-              className="detail-close"
-              aria-label="关闭"
-              onClick={closeDetail}
-            >
-              ✕
-            </button>
-            <div
-              className="project-detail-panel"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {selected.type && (
-                <span className="detail-type mono">{selected.type}</span>
-              )}
-              <h3 className="detail-name">{selected.name}</h3>
+        {/* 详情子面板：用 portal 渲染到 body 级，脱离 projects section 的 z1 上下文，
+            保证遮罩（z200）与关闭按钮（z210）在导航栏（z100）之上 */}
+        {selected &&
+          createPortal(
+            <div className="project-detail-mask" onClick={closeDetail}>
+              {/* 关闭按钮挂在遮罩层（无 transform 动画），fixed 始终相对视口，
+                  不会因面板动画而瞬移 */}
+              <button
+                className="detail-close"
+                aria-label="关闭"
+                onClick={closeDetail}
+              >
+                ✕
+              </button>
+              <div
+                className="project-detail-panel"
+                onClick={(e) => {
+                  // 点击面板内容区退出详情；链接/按钮/媒体（视频/照片）不退出
+                  if (e.target.closest("a, button, .detail-media")) return;
+                  closeDetail();
+                }}
+              >
+                {selected.type && (
+                  <span className="detail-type mono">{selected.type}</span>
+                )}
+                <h3 className="detail-name">{selected.name}</h3>
 
-              {selected.data ? (
-                <>
-                  {selected.data.summary && (
-                    <p className="detail-summary">{selected.data.summary}</p>
-                  )}
-                  {selected.data.points?.length > 0 && (
-                    <div className="detail-points">
-                      {selected.data.points.map((pt, i) => (
-                        <div className="detail-point" key={i}>
-                          <span className="dp-label mono">{pt.label}</span>
-                          <p className="dp-text">{pt.text}</p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  {selected.data.tags?.length > 0 && (
-                    <div className="detail-tags">
-                      {selected.data.tags.map((t, i) => (
-                        <span className="tag" key={i}>
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                  {selected.data.links?.length > 0 && (
-                    <div className="detail-links">
-                      {selected.data.links.map((l, i) => (
-                        <a
-                          className="btn"
-                          href={l.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          key={i}
-                        >
-                          {l.label} ↗
-                        </a>
-                      ))}
-                    </div>
-                  )}
-                </>
-              ) : (
-                <p className="detail-summary">项目详情待补充，可在 src/data.js 中添加该项目。</p>
-              )}
-            </div>
-          </div>
-        )}
+                {selected.data ? (
+                  <>
+                    {selected.data.summary && (
+                      <p className="detail-summary">{selected.data.summary}</p>
+                    )}
+                    {selected.data.points?.length > 0 && (
+                      <div className="detail-points">
+                        {selected.data.points.map((pt, i) => (
+                          <div className="detail-point" key={i}>
+                            <span className="dp-label mono">{pt.label}</span>
+                            <p className="dp-text">{pt.text}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    {selected.data.tags?.length > 0 && (
+                      <div className="detail-tags">
+                        {selected.data.tags.map((t, i) => (
+                          <span className="tag" key={i}>
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    {selected.data.links?.length > 0 && (
+                      <div className="detail-links">
+                        {selected.data.links.map((l, i) => (
+                          <a
+                            className="btn"
+                            href={l.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            key={i}
+                          >
+                            {l.label} ↗
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <p className="detail-summary">项目详情待补充，可在 src/data.js 中添加该项目。</p>
+                )}
+              </div>
+            </div>,
+            document.body
+          )}
       </div>
     </section>
   );
