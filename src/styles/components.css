@@ -1353,6 +1353,13 @@
   .hero {
     padding-top: 130px;
   }
+  /* 手机版：自我介绍改为布局上移 100px（margin 负值），
+     自我介绍以下所有内容（奖项/履历/项目/联系）联动上移；
+     取消全局 transform 的视觉上移，避免叠加 */
+  .hero-main {
+    transform: none;
+    margin-top: -100px;
+  }
   .intro-grid {
     grid-template-columns: 1fr;
   }
