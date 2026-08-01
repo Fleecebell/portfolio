@@ -1358,7 +1358,7 @@
      取消全局 transform 的视觉上移，避免叠加 */
   .hero-main {
     transform: none;
-    margin-top: -100px;
+    margin-top: -200px;
   }
   .intro-grid {
     grid-template-columns: 1fr;
