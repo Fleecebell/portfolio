@@ -259,7 +259,8 @@
   .hero-video-hint {
     font-size: 0.62rem;
     padding: 5px 10px;
-    margin-right: 6px;
+    /* 给固定右上角的汉堡栏（42px + 间距）让位，避免重叠 */
+    margin-right: 54px;
   }
 }
 

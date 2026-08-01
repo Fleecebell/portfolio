@@ -83,3 +83,12 @@
     transform: translate(-50%, 0);
   }
 }
+
+/* 手机端：复制成功提示移到屏幕最上方（导航栏下方） */
+@media (max-width: 640px) {
+  .lanyard-toast {
+    top: 92px;
+    bottom: auto;
+    font-size: 0.72rem;
+  }
+}

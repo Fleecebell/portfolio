@@ -509,12 +509,12 @@ function Band({
         rot.copy(card.current.rotation());
         card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z });
       }
-    // 每 5 秒随机轻弹一下（桌面端；拖拽中不弹，避免干扰）
-    if (!isMobile && !dragged) {
+    // 每 5 秒随机轻弹一下（桌面端 + 手机端；拖拽中不弹，避免干扰）
+    if (!dragged) {
       kickTimer.current -= delta;
       if (kickTimer.current <= 0) {
         kickTimer.current = 5;
-        kick(0.18);
+        kick(isMobile ? 0.14 : 0.18);
       }
     }
     } catch {
