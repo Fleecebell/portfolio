@@ -27,6 +27,7 @@
 - Reveal 滚动动效在 fullPage 截图时与 IntersectionObserver 时序错位，截图脚本需强制 `is-inview` 后再截
 - 本机 git CLI 无 GitHub 凭据，push 需 GitHub Desktop 或 PAT；GitHub 连接器 MCP 对该仓库写权限 403（不可靠）
 - **千万别删根目录 index.html**——它是 Vite 构建入口，删了 Actions 构建必失败（Could not resolve entry module）
+- **⚠️ .gitignore 的 `assets/` 会误伤 `public/assets/`**（git 路径模式匹配任意层级）！2026-08-04 已改为 `/assets/`（锚定根目录）。表现：本地 dev 正常但线上缺项目/图 = 新文件被 ignore 未 push。新增文件后务必 `git status` 确认 untracked 已出现
 
 ## 线上部署
 - 正式域名：https://fleecebell.github.io/portfolio/（GitHub Actions 自动构建部署，pages.yml）

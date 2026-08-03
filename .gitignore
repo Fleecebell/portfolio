@@ -3,7 +3,8 @@ node_modules/
 dist/
 
 # preview.html 使用的静态资源副本（源文件在 public/，构建后自动复制到根目录 assets/）
-assets/
+# 注意：必须用 /assets/ 锚定根目录，否则会误伤 public/assets/（作品封面所在）
+/assets/
 
 # 系统文件
 .DS_Store
