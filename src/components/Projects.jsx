@@ -47,7 +47,6 @@ export default function Projects() {
   const [h1, setH1] = useState(-1); // 第一排悬停
   const [h2, setH2] = useState(-1); // 第二排悬停
   const [selected, setSelected] = useState(null);
-  const [paused, setPaused] = useState(false); // 鼠标悬停封面时两排统一暂停（保证交错恒定），离开封面恢复滚动
   const items = buildItems();
 
   useEffect(() => {
@@ -79,19 +78,15 @@ export default function Projects() {
               key={`${offset}-${item.num}-${i}`}
               onMouseEnter={() => {
                 setHovered(i);
-                setPaused(true);
               }}
               onMouseLeave={() => {
                 setHovered(-1);
-                setPaused(false);
               }}
               onTouchStart={() => {
                 setHovered(i);
-                setPaused(true);
               }}
               onTouchEnd={() => {
                 setHovered(-1);
-                setPaused(false);
               }}
               onClick={() => setSelected(item)}
             >
@@ -143,7 +138,7 @@ export default function Projects() {
             </div>
           </Reveal>
         ) : (
-          <div className={`pm-rows ${paused ? "paused" : ""}`}>
+          <div className="pm-rows">
             <div className="pm-row">
               {renderRow(h1, setH1, 0)}
             </div>

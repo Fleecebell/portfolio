@@ -1447,11 +1447,6 @@ main > section:not(.hero) {
   will-change: transform;
 }
 
-/* 两排统一暂停：鼠标悬停封面时两排同时停，保证上下交错关系恒定（离开封面恢复滚动） */
-.pm-rows.paused .project-marquee-track {
-  animation-play-state: paused;
-}
-
 /* 无缝滚动：轨道 = 2 份循环（loop 拼接两份），卡片用 margin-right 保证
    每张（含最后一张）等宽，-50% 位移恰好 = 1 份循环宽度，循环无跳变 */
 @keyframes pm-marquee {
