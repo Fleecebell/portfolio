@@ -22,6 +22,7 @@ function buildItems() {
         name: p.name,
         type: shortType(p.type),
         num,
+        gallery: c.gallery || [],
         data: p,
       });
       used.add(num);
@@ -35,6 +36,7 @@ function buildItems() {
         name: c.info?.name || `项目 ${c.num}`,
         type: shortType(c.info?.type),
         num: c.num,
+        gallery: c.gallery || [],
         data: null,
       });
     }
@@ -175,48 +177,26 @@ export default function Projects() {
                 )}
                 <h3 className="detail-name">{selected.name}</h3>
 
-                {selected.data ? (
-                  <>
-                    {selected.data.summary && (
-                      <p className="detail-summary">{selected.data.summary}</p>
-                    )}
-                    {selected.data.points?.length > 0 && (
-                      <div className="detail-points">
-                        {selected.data.points.map((pt, i) => (
-                          <div className="detail-point" key={i}>
-                            <span className="dp-label mono">{pt.label}</span>
-                            <p className="dp-text">{pt.text}</p>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                    {selected.data.tags?.length > 0 && (
-                      <div className="detail-tags">
-                        {selected.data.tags.map((t, i) => (
-                          <span className="tag" key={i}>
-                            {t}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                    {selected.data.links?.length > 0 && (
-                      <div className="detail-links">
-                        {selected.data.links.map((l, i) => (
-                          <a
-                            className="btn"
-                            href={l.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            key={i}
-                          >
-                            {l.label} ↗
-                          </a>
-                        ))}
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <p className="detail-summary">项目详情待补充，可在 src/data.js 中添加该项目。</p>
+                {/* 详情内容占位：统一一句话，后续按 jam站点/获奖 + 游戏内容 +
+                    工作内容 + 技术点 + 游戏图片 结构填充 */}
+                <p className="detail-summary">
+                  jam站点/获奖+游戏内容+工作内容+技术点+游戏图片（占位）
+                </p>
+
+                {/* 游戏图片：project-N 文件夹内除 cover.* 外的所有 png/jpg，
+                    按文件名排序，横向滚动查看 */}
+                {selected.gallery?.length > 0 && (
+                  <div className="detail-media">
+                    {selected.gallery.map((src) => (
+                      <img
+                        key={src}
+                        src={src}
+                        alt={`${selected.name} 截图`}
+                        loading="lazy"
+                        draggable="false"
+                      />
+                    ))}
+                  </div>
                 )}
               </div>
             </div>,

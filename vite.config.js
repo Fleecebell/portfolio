@@ -7,8 +7,9 @@ import { fileURLToPath } from 'node:url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-// 自动扫描 public/assets/projects/project-N/ 下的封面与可选 info.json：
-// 只要放入 cover.jpg（或 .jpeg/.png/.webp）就会在构建时被读取，
+// 自动扫描 public/assets/projects/project-N/ 下的封面、子页面图片与可选 info.json：
+// - cover.jpg（或 .jpeg/.png/.webp）→ 轮播封面
+// - 其余所有 .png/.jpg → 子页面展示图（按文件名排序，数量不限）
 // 新增 project-5、project-6... 文件夹无需改代码即可并入作品轮播。
 function projectCoversPlugin() {
   const VIRTUAL = 'virtual:project-covers'
@@ -29,6 +30,11 @@ function projectCoversPlugin() {
             const ext = ['jpg', 'jpeg', 'png', 'webp'].find((e) =>
               existsSync(resolve(dir, d.name, `cover.${e}`))
             )
+            // 子页面图：目录下所有 png/jpg（排除 cover.*），按文件名排序
+            const gallery = readdirSync(resolve(dir, d.name))
+              .filter((f) => /\.(png|jpe?g)$/i.test(f) && !/^cover\./i.test(f))
+              .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }))
+              .map((f) => `./assets/projects/${d.name}/${f}`)
             let info = null
             const infoPath = resolve(dir, d.name, 'info.json')
             if (existsSync(infoPath)) {
@@ -42,6 +48,7 @@ function projectCoversPlugin() {
               num,
               folder: d.name,
               cover: ext ? `./assets/projects/${d.name}/cover.${ext}` : null,
+              gallery,
               info,
             }
           })

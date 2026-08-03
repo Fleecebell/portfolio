@@ -1229,6 +1229,52 @@
   gap: 16px;
 }
 
+.contact-links .btn {
+  cursor: pointer;
+}
+
+/* 复制成功提示：样式与挂牌 toast 完全一致（fixed 屏幕底部中央） */
+.contact-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 8%;
+  transform: translateX(-50%);
+  z-index: 400;
+  padding: 10px 20px;
+  border: 1px solid rgba(94, 234, 212, 0.4);
+  border-radius: 999px;
+  background: rgba(8, 11, 16, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #e9edf4;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.45), 0 0 22px rgba(94, 234, 212, 0.08);
+  animation: contact-toast-in 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+@keyframes contact-toast-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -8px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* 手机端：复制成功提示固定在屏幕顶部（导航栏下方一点点），不随滚动移动 */
+@media (max-width: 640px) {
+  .contact-toast {
+    top: 84px;
+    bottom: auto;
+    font-size: 0.72rem;
+  }
+}
+
 /* ------------------------------------------------------------
    页脚
    ------------------------------------------------------------ */
@@ -1705,6 +1751,22 @@ main > section:not(.hero) {
   font-size: 0.96rem;
   line-height: 2;
   margin-bottom: 20px;
+}
+
+/* 子页面游戏图片：竖排展示（等比缩放，宽自适应面板） */
+.detail-media {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 4px 0 4px;
+  margin: 0 0 4px;
+}
+
+.detail-media img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-m);
+  border: 1px solid var(--line-2);
 }
 
 .detail-points {
