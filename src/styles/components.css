@@ -295,7 +295,9 @@
 .hero-glow {
   position: absolute;
   border-radius: 50%;
-  filter: blur(90px);
+  /* 性能：blur 从 90px 降至 48px——大半径高斯模糊逐帧动画开销高，
+     降级后视觉差异小、渲染成本明显下降 */
+  filter: blur(48px);
   opacity: 0.5;
 }
 
@@ -1417,6 +1419,10 @@ main > section:not(.hero) {
   #awards {
     margin-top: -180px;
   }
+  /* 项目与能力：电脑/平板上整体下移 100px（布局联动，其余不变） */
+  #projects {
+    margin-top: 100px;
+  }
 }
 
 /* ------------------------------------------------------------
@@ -1517,16 +1523,16 @@ main > section:not(.hero) {
   overflow: hidden;
   cursor: pointer;
   background: rgba(14, 18, 24, 0.4);
+  /* 性能：hover 只用 border-color + transform（合成层动画，不触发重绘），
+     去掉 box-shadow 动画——轮播滚动时大量卡片 hover 的 box-shadow 会逐帧重绘导致卡顿 */
   transition:
     border-color 0.4s var(--ease-out),
-    box-shadow 0.4s var(--ease-out),
     transform 0.4s var(--ease-out);
 }
 
 .project-marquee-card:hover,
 .project-marquee-card.hovered {
   border-color: var(--accent);
-  box-shadow: 0 0 30px var(--accent-dim);
   transform: translateY(-4px);
 }
 

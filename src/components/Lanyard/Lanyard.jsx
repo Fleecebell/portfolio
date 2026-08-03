@@ -233,6 +233,21 @@ export default function Lanyard({
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
   const [toast, setToast] = useState(false);
   const toastTimer = useRef(null);
+  // 视口内可见性：滚出视口后暂停 3D 渲染（frameloop=never），大幅降低滚动到
+  // 下方栏目时的 GPU 开销（背景视频 + 轮播动画 + 3D 同时运行是卡顿来源之一）
+  const [inView, setInView] = useState(true);
+  const wrapperRef = useRef(null);
+
+  useEffect(() => {
+    const el = wrapperRef.current;
+    if (!el || !('IntersectionObserver' in window)) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { rootMargin: '200px 0px' } // 提前 200px 预热，避免滚动瞬间闪断
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -264,20 +279,21 @@ export default function Lanyard({
   const camFov = isMobile ? 40 : fov;
 
   return (
-    <div className="lanyard-wrapper">
+    <div className="lanyard-wrapper" ref={wrapperRef}>
       <LanyardBoundary frontImage={frontImage}>
         <Canvas
           eventSource={eventSource}
           camera={{ position: camPos, fov: camFov }}
           // 画布四向延展后物理像素巨大，dpr 降到 1.25 控制 GPU 开销
           dpr={[1, 1.25]}
+          frameloop={inView ? 'always' : 'never'}
           gl={{ alpha: transparent }}
           onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
         >
-          {/* 中性白光为主（去掉冷色/teal 光源，避免立牌蒙蓝） */}
-          <ambientLight intensity={1.0} />
-          <directionalLight position={[4, 5, 3]} intensity={1.4} color="#ffffff" />
-          <directionalLight position={[-5, 1, 4]} intensity={0.5} color="#ffffff" />
+          {/* 中性白光为主（提高整体亮度） */}
+          <ambientLight intensity={1.4} />
+          <directionalLight position={[4, 5, 3]} intensity={1.8} color="#ffffff" />
+          <directionalLight position={[-5, 1, 4]} intensity={0.7} color="#ffffff" />
           <Physics gravity={gravity} timeStep={isMobile ? 1 / 30 : 1 / 60}>
             <Band
               isMobile={isMobile}
@@ -583,9 +599,10 @@ function Band({
               <meshPhysicalMaterial
                 map={cardMap}
                 map-anisotropy={16}
-                clearcoat={isMobile ? 0 : 0.3}
-                clearcoatRoughness={0.5}
-                roughness={0.72}
+                /* 反光度调高：清漆层加厚、表面更光滑 */
+                clearcoat={isMobile ? 0.2 : 0.6}
+                clearcoatRoughness={0.3}
+                roughness={0.55}
                 metalness={0.3}
               />
             </mesh>
