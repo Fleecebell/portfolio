@@ -49,16 +49,19 @@ export default function Projects() {
   const [h1, setH1] = useState(-1); // 第一排悬停
   const [h2, setH2] = useState(-1); // 第二排悬停
   const [selected, setSelected] = useState(null);
+  const [zoomImg, setZoomImg] = useState(null); // 点击放大的图片
   const items = buildItems();
 
   useEffect(() => {
-    if (!selected) return;
     const onKey = (e) => {
-      if (e.key === "Escape") setSelected(null);
+      if (e.key === "Escape") {
+        if (zoomImg) setZoomImg(null);
+        else setSelected(null);
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [selected]);
+  }, [zoomImg, selected]);
 
   const closeDetail = () => setSelected(null);
 
@@ -177,28 +180,89 @@ export default function Projects() {
                 )}
                 <h3 className="detail-name">{selected.name}</h3>
 
-                {/* 详情内容占位：统一一句话，后续按 jam站点/获奖 + 游戏内容 +
-                    工作内容 + 技术点 + 游戏图片 结构填充 */}
-                <p className="detail-summary">
-                  jam站点/获奖+游戏内容+工作内容+技术点+游戏图片（占位）
-                </p>
+                {selected.data ? (
+                  <>
+                    {/* 游戏内容 */}
+                    {selected.data.summary && (
+                      <section className="detail-block">
+                        <span className="dp-label mono">游戏内容</span>
+                        <p className="detail-summary">{selected.data.summary}</p>
+                      </section>
+                    )}
 
-                {/* 游戏图片：project-N 文件夹内除 cover.* 外的所有 png/jpg，
-                    按文件名排序，横向滚动查看 */}
-                {selected.gallery?.length > 0 && (
-                  <div className="detail-media">
-                    {selected.gallery.map((src) => (
-                      <img
-                        key={src}
-                        src={src}
-                        alt={`${selected.name} 截图`}
-                        loading="lazy"
-                        draggable="false"
-                      />
-                    ))}
-                  </div>
+                    {/* 工作内容：纯段落显示（与游戏内容一致，无卡片框） */}
+                    {selected.data.points?.length > 0 && (
+                      <section className="detail-block">
+                        <span className="dp-label mono">工作内容</span>
+                        {selected.data.points.map((pt, i) => (
+                          <p className="detail-summary" key={i}>
+                            {pt.text}
+                          </p>
+                        ))}
+                      </section>
+                    )}
+
+                    {/* 游戏图片：位于工作内容与 jam站点 之间，project-N 文件夹内
+                        除 cover.* 外的所有 png/jpg，按文件名排序，两列展示 */}
+                    {selected.gallery?.length > 0 && (
+                      <section className="detail-block">
+                        <span className="dp-label mono">游戏图片</span>
+                        <div className="detail-media">
+                          {selected.gallery.map((src) => (
+                            <img
+                              key={src}
+                              src={src}
+                              alt={`${selected.name} 截图`}
+                              loading="lazy"
+                              draggable="false"
+                              onClick={(e) => {
+                                e.stopPropagation(); // 阻止冒泡到详情面板
+                                setZoomImg(src);
+                              }}
+                            />
+                          ))}
+                        </div>
+                      </section>
+                    )}
+
+                    {/* jam站点/获奖 */}
+                    {selected.data.links?.length > 0 && (
+                      <section className="detail-block">
+                        <span className="dp-label mono">jam站点/获奖</span>
+                        <div className="detail-links">
+                          {selected.data.links.map((l, i) => (
+                            <a
+                              className="btn"
+                              href={l.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              key={i}
+                            >
+                              {l.label} ↗
+                            </a>
+                          ))}
+                        </div>
+                      </section>
+                    )}
+                  </>
+                ) : (
+                  <p className="detail-summary">
+                    项目详情待补充，可在 src/data.js 中添加该项目。
+                  </p>
                 )}
               </div>
+            </div>,
+            document.body
+          )}
+
+        {/* 图片放大查看：全屏遮罩 + 居中大图，点击遮罩或图片关闭 */}
+        {zoomImg &&
+          createPortal(
+            <div
+              className="detail-zoom"
+              onClick={() => setZoomImg(null)}
+            >
+              <img src={zoomImg} alt="放大查看" draggable="false" />
             </div>,
             document.body
           )}
