@@ -652,7 +652,8 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
-  align-items: stretch;
+  /* 始终独立高度：每个条目按自身内容高度，展开/收起互不影响、无跳变 */
+  align-items: start;
 }
 
 .timeline-item {
@@ -660,7 +661,7 @@
   display: grid;
   align-content: start;
   gap: 10px;
-  padding: 28px 26px;
+  padding: 28px 26px 74px; /* 底部留出按钮空间（不展开时按钮浮在底部） */
   border: 1px solid var(--line-1);
   border-radius: var(--radius-m);
   background: linear-gradient(170deg, rgba(22, 28, 38, 0.5), rgba(12, 16, 22, 0.58));
@@ -714,6 +715,95 @@
   color: var(--accent);
   opacity: 0.7;
   font-size: 0.8em;
+}
+
+/* 可展开条目：倒三角按钮绝对定位在条目底部（不占文档流高度），
+   子框文档流向下扩展。网格独立高度 → 展开/收起只影响本条目，
+   其他条目高度完全不变、无收回跳变 */
+.timeline-expand {
+  position: relative;
+}
+
+.tl-toggle {
+  position: absolute;
+  left: 50%;
+  bottom: -40px; /* 落在条目底部预留区内 */
+  transform: translateX(-50%);
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid var(--line-3);
+  border-radius: 50%;
+  background: rgba(14, 18, 24, 0.55);
+  cursor: pointer;
+  opacity: 0.55;
+  transition:
+    opacity 0.3s var(--ease-out),
+    border-color 0.3s var(--ease-out),
+    background 0.3s var(--ease-out),
+    transform 0.3s var(--ease-out);
+  /* 上下浮动 */
+  animation: tl-bob 2.6s ease-in-out infinite;
+}
+
+.tl-toggle:hover {
+  opacity: 1; /* 鼠标移入更不透明 */
+  border-color: var(--accent);
+  background: rgba(94, 234, 212, 0.12);
+  transform: translateX(-50%) scale(1.25); /* 鼠标移入变大 */
+  animation-play-state: paused;
+}
+
+.tl-toggle .tl-caret {
+  display: block;
+  width: 0;
+  height: 0;
+  margin: 0 auto;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 7px solid var(--accent);
+  transition: transform 0.35s var(--ease-out);
+}
+
+.tl-toggle.is-open .tl-caret {
+  transform: rotate(180deg); /* 展开时倒三角翻转朝上 */
+}
+
+@keyframes tl-bob {
+  0%, 100% { transform: translate(-50%, 0); }
+  50% { transform: translate(-50%, -5px); }
+}
+
+/* 展开详情子框：文档流，展开时条目下边缘向下扩展 */
+.tl-detail {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 0.35s var(--ease-out),
+    opacity 0.3s var(--ease-out);
+}
+
+.tl-detail.is-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.tl-detail p {
+  overflow: hidden;
+  margin: 10px 0 0;
+  padding: 14px 16px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-s);
+  background: rgba(14, 18, 24, 0.5);
+  color: var(--text-2);
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+
+/* 展开时条目边框提亮，与子框联动 */
+.timeline-item:has(.tl-detail.is-open) {
+  border-color: var(--line-3);
 }
 
 /* ------------------------------------------------------------
