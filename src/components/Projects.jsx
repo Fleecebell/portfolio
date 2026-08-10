@@ -225,8 +225,8 @@ export default function Projects() {
                       </section>
                     )}
 
-                    {/* jam站点/获奖 */}
-                    {selected.data.links?.length > 0 && (
+                    {/* jam站点/获奖 — 暂时隐藏 */}
+                    {/* {selected.data.links?.length > 0 && (
                       <section className="detail-block">
                         <span className="dp-label mono">jam站点/获奖</span>
                         <div className="detail-links">
@@ -243,7 +243,7 @@ export default function Projects() {
                           ))}
                         </div>
                       </section>
-                    )}
+                    )} */}
                   </>
                 ) : (
                   <p className="detail-summary">
