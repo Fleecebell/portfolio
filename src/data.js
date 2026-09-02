@@ -220,7 +220,7 @@ export default {
       ],
     },
     {
-      name: "未命名策略游戏",
+      name: "落定棋",
       type: "2D 策略",
       role: "主程序",
       status: "已具备",
