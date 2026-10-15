@@ -191,7 +191,7 @@ export default {
       ],
     },
     {
-      name: "Shatter",
+      name: "Shutter",
       type: "3D 解谜 / CiGA GameJam 2025 / 长期开发",
       role: "副程序",
       status: "补强中",
